@@ -40,6 +40,7 @@ import frc.robot.commands.climb.MoveDownUntilStall;
 import frc.robot.commands.climb.RunClimb;
 import frc.robot.commands.climb.UndeployClimb;
 import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.RotateToAngle;
 import frc.robot.commands.hood.AimToAngle;
 import frc.robot.commands.hood.ZeroHood;
 import frc.robot.commands.hood.ZeroHoodSoft;
@@ -185,7 +186,7 @@ public class RobotContainer
             new ShooterDefaultSpeed()); // because a command instance cannot be scheduled to independent triggers
 
         // tested in sim
-        shoot = new DriveToPose(drivetrain, ()->AlignConstants.HUB)
+        shoot = new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
             .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
             .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain)) && Hood.getInstance().readyToShoot()))
             .andThen(new ShooterIndexerFullSpeed()) // load to shoot
@@ -195,7 +196,7 @@ public class RobotContainer
             .withName("Shoot");
 
         // tested in sim
-        pass = new DriveToPose(drivetrain, ()->AlignConstants.HUB)
+        pass = new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
             .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
             .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain)) && Hood.getInstance().readyToShoot()))
             .andThen(new ShooterIndexerFullSpeed()) // load to shoot
@@ -279,7 +280,7 @@ public class RobotContainer
         ShooterIndexer.getInstance().setDefaultCommand(new ShooterIndexerDefaultSpeed());
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
 
-        boolean useDebuggingBindings = false; // mainly for sysid or debugging
+        boolean useDebuggingBindings = true; // mainly for sysid or debugging
         boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
         if (useDebuggingBindings) configureDebugBindings();
         else if (useDefaultBindings)
@@ -312,6 +313,16 @@ public class RobotContainer
         driver.b().whileTrue(Shooter.getInstance().leftSysIdQuasistatic(Direction.kReverse));
         driver.x().whileTrue(Shooter.getInstance().leftSysIdDynamic(Direction.kForward));
         driver.y().whileTrue(Shooter.getInstance().leftSysIdDynamic(Direction.kReverse));
+
+        driver.button(1).onTrue(new DriveToPose(drivetrain));
+
+        drivetrain.setDefaultCommand(
+                // Drivetrain will execute this command periodically
+                drivetrain.applyRequest(() -> 
+                        drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(-driver.getLeftX() * MaxSpeed * (isSlow ? Constants.TRANSLATION_SLOW_MULTIPLIER : 1.0)) // Drive left with negative X (left)
+                        .withRotationalRate(-driver.getRightX() * MaxAngularRate * (isSlow ? Constants.ROTATION_SLOW_MULTIPLIER : 1.0)) // Drive counterclockwise with negative X (left)
+                    ).withName("SwerveManual"));
     }
 
     private void configureDefaultBindings()

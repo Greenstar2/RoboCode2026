@@ -55,6 +55,11 @@ public class Constants
                 new Translation3d(Units.inchesToMeters(5.472), Units.inchesToMeters(-10.5), Units.inchesToMeters(7.482)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(26.1), 0)); // TODO bc this is copied from 2025 code
 
+        public static final String kCamera2Name = "limelight";
+        public static final Transform3d kRobotToCam2 = new Transform3d(
+                new Translation3d(Units.inchesToMeters(5.472), Units.inchesToMeters(-10.5), Units.inchesToMeters(7.482)),
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(26.1), 0)); // TODO bc this is copied from 2025 code
+
         public static final double linTagStdDevs = 0.1;
         public static final double angTagStdDevs = 999999;
         public static final Matrix<N3, N1> kTagStdDevs = VecBuilder.fill(0.1, 0.1, 99999);
