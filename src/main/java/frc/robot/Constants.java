@@ -70,10 +70,8 @@ public class Constants
 
     public class Shooter
     {
-        public static final int LEFT_MASTER_ID = 19;
-        public static final int LEFT_FOLLOWER_ID = 20;
-        public static final int RIGHT_MASTER_ID = 21;
-        public static final int RIGHT_FOLLOWER_ID = 22;
+        public static final int LEFT_ID = 19;
+        public static final int RIGHT_ID = 21;
         
         public static final double STATOR_CURRENT_LIMIT = 90.0;
         public static final double SUPPLY_CURRENT_LIMIT = 90.0;
@@ -81,9 +79,10 @@ public class Constants
         public static final double MM_CRUISE_VELOCITY = 60.0;
 		public static final double MM_ACCELERATION = 60.0;
 		public static final double MM_JERK = 240.0;
-		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
+		public static final InvertedValue LEFT_INVERTED = InvertedValue.CounterClockwise_Positive;
+		public static final InvertedValue RIGHT_INVERTED = InvertedValue.CounterClockwise_Positive;
         
-        public static final double GEAR_RATIO = 1.0; // TODO
+        public static final double GEAR_RATIO = 0.6; // TODO
 
 		public static final double LEFT_KP = 0.042562; // TODO
 		public static final double LEFT_KI = 0.0; // TODO
@@ -105,7 +104,8 @@ public class Constants
         public static final double INCREASE_VELOCITY = 0.5; // TODO
         public static final double MAX_VELOCITY = 20.0; // TODO
         
-        public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
+        public static final ChassisReference LEFT_MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
+        public static final ChassisReference RIGHT_MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
     }
 
     public class Intake
@@ -178,18 +178,18 @@ public class Constants
         */
 		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         
-        public static final double GEAR_RATIO = 1.0; // TODO
+        public static final double GEAR_RATIO = 1.0;
 
-		public static final double KP = 0.24194; // TODO
-		public static final double KI = 0.0; // TODO
-		public static final double KD = 0.0022479; // TODO
+		public static final double KP = 0.24194; // sim
+		public static final double KI = 0.0; // sim
+		public static final double KD = 0.0022479; // sim
 		
-        public static final double KS = 0.0041693; // TODO
-        public static final double KV = 0.019146; // TODO
-        public static final double KA = 0.0018688; // TODO
+        public static final double KS = 0.0041693; // sim
+        public static final double KV = 0.019146; // sim
+        public static final double KA = 0.0018688; // sim
 
-        public static final double MIN_POSITION = 0.1; // TODO min hopper position (rotations) for simulation
-        public static final double MAX_POSITION = 10.0; // TODO max hopper position (rotations) for simulation
+        public static final double MIN_POSITION = 0.1; // sim
+        public static final double MAX_POSITION = 10.0; // sim
  
         public static final double FORWARD_VOLTAGE = 1.0; // TODO
         public static final double BACKWARD_VOLTAGE = -1.0; // TODO
@@ -201,8 +201,7 @@ public class Constants
     
     public class Hood
     {
-        public static final int MASTER_ID = 26;
-        public static final int FOLLOWER_ID = 27;
+        public static final int ID = 26;
         
         public static final double STATOR_CURRENT_LIMIT = 90.0;
         public static final double SUPPLY_CURRENT_LIMIT = 90.0;
@@ -212,7 +211,7 @@ public class Constants
 		public static final double MM_JERK = 8.0; // TODO
 		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         
-        public static final double GEAR_RATIO = 1.0; // TODO
+        public static final double GEAR_RATIO = 0.12;
 
 		public static final double KP = 1.0; // TODO
 		public static final double KI = 0.9; // TODO
@@ -231,12 +230,12 @@ public class Constants
         public static final double MOMENT_OF_INERTIA = 0.001; // TODO (kg m^2)
 
         public static final double LENGTH = 0.5; // TODO meters
-        public static final double MIN_ANGLE = 5.0; // TODO degrees
+        public static final double MIN_ANGLE = 60.0; // degrees
         public static final double MAX_ANGLE = 75.0; // degrees
     
-        public static final double STALLING_CURRENT = 50.0;
+        public static final double STALLING_CURRENT = 50.0; // TODO
 
-        public static final double ZEROING_VOLTAGE = -1.0; // TODO
+        public static final double ZEROING_VOLTAGE = -0.2; // TODO
     }
 
     /*

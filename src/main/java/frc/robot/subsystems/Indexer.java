@@ -25,7 +25,6 @@ import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Indexer extends SubsystemBase
 {
-    
     private static Indexer instance;
 
     private static TalonFX motor;
