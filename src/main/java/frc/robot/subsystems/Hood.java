@@ -100,13 +100,17 @@ public class Hood extends SubsystemBase
         config.MotionMagic.MotionMagicJerk = Constants.Hood.MM_JERK;
 
         config.MotorOutput.Inverted = Constants.Hood.INVERTED;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         config.Slot0.kP = Constants.Hood.KP;
         config.Slot0.kI = Constants.Hood.KI;
         config.Slot0.kD = Constants.Hood.KD;
-        config.Slot0.kG = Constants.Hood.KG;
+        
+        config.Slot0.kS = Constants.Hood.KS;
         config.Slot0.kV = Constants.Hood.KV;
+        config.Slot0.kA = Constants.Hood.KA;
+        config.Slot0.kG = Constants.Hood.KG;
+
         config.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
 
         config.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;

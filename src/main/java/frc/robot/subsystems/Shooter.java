@@ -106,7 +106,6 @@ public class Shooter extends SubsystemBase
         leftConfig.Slot0.kV = Constants.Shooter.LEFT_KV;
         leftConfig.Slot0.kA = Constants.Shooter.LEFT_KA;
         leftConfig.MotorOutput.Inverted = Constants.Shooter.LEFT_INVERTED;
-        
         left.getConfigurator().apply(leftConfig);
         
         TalonFXConfiguration rightConfig = new TalonFXConfiguration();
