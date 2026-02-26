@@ -239,6 +239,8 @@ public class Constants
     
         public static final double STALLING_CURRENT = 50.0; // TODO
 
+        public static final double MANUAL_UP_VOLTAGE = 0.5; // TODO
+        public static final double MANUAL_DOWN_VOLTAGE = -0.5; // TODO
         public static final double ZEROING_VOLTAGE = -0.2; // TODO
     }
 

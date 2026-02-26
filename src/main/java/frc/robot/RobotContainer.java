@@ -40,6 +40,8 @@ import frc.robot.commands.climb.RunClimb;
 import frc.robot.commands.climb.UndeployClimb;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.hood.AimToAngle;
+import frc.robot.commands.hood.HoodManualDown;
+import frc.robot.commands.hood.HoodManualUp;
 import frc.robot.commands.hood.ZeroHood;
 import frc.robot.commands.hood.ZeroHoodSoft;
 import frc.robot.commands.hopper.ExtendHopper;
@@ -212,13 +214,15 @@ public class RobotContainer
         testCommandChooser.addOption("Climb/ClimbToLevel[3]", new ClimbToLevel(3));
         testCommandChooser.addOption("Climb/MoveDownUntilStall", new MoveDownUntilStall());
         testCommandChooser.addOption("Hood/AimToAngle[" + Constants.Hood.MIN_ANGLE + "°]", new AimToAngle(Constants.Hood.MIN_ANGLE));
-        testCommandChooser.addOption("Hood/AimToAngle[10°]", new AimToAngle(10.0));
-        testCommandChooser.addOption("Hood/AimToAngle[20°]", new AimToAngle(20.0));
+        testCommandChooser.addOption("Hood/AimToAngle[65°]", new AimToAngle(65.0));
+        testCommandChooser.addOption("Hood/AimToAngle[70°]", new AimToAngle(70.0));
         testCommandChooser.addOption("Hood/AimToAngle[" + Constants.Hood.MAX_ANGLE + "°]", new AimToAngle(Constants.Hood.MAX_ANGLE));
         testCommandChooser.addOption("Hood/ZeroHood", new ZeroHood());
         testCommandChooser.addOption("Hood/ZeroHoodSoft", new ZeroHoodSoft());
-        testCommandChooser.addOption("Hood/ExtendHopper", new ExtendHopper());
-        testCommandChooser.addOption("Hood/RetractHopper", new RetractHopper());
+        testCommandChooser.addOption("Hood/HoodManualUp", new HoodManualUp());
+        testCommandChooser.addOption("Hood/HoodManualDown", new HoodManualDown());
+        testCommandChooser.addOption("Hopper/ExtendHopper", new ExtendHopper());
+        testCommandChooser.addOption("Hopper/RetractHopper", new RetractHopper());
         testCommandChooser.addOption("Indexer/IndexerDefaultSpeed", new IndexerDefaultSpeed());
         testCommandChooser.addOption("Indexer/IndexerFullSpeed", new IndexerFullSpeed());
         testCommandChooser.addOption("Intake/DefaultIntake", new DefaultIntake());
@@ -273,7 +277,7 @@ public class RobotContainer
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
 
         boolean useDebuggingBindings = false; // mainly for sysid or debugging
-        boolean useDefaultBindings = true; // in case ever the official controls don't work, use these as a backup to be able to drive around
+        boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
         if (useDebuggingBindings) configureDebugBindings();
         else if (useDefaultBindings)
         {
@@ -319,18 +323,9 @@ public class RobotContainer
                         .withRotationalRate(-driver.getRightX() * MaxAngularRate * (isSlow ? Constants.ROTATION_SLOW_MULTIPLIER : 1.0)) // Drive counterclockwise with negative X (left)
                     ).withName("SwerveManual"));
 
-        /*
         driver.b().toggleOnTrue(new RunIntake());
         driver.a().toggleOnTrue(new ExtendIntake());
         driver.y().toggleOnTrue(new RetractIntake());
-        */
-
-        driver.b().toggleOnTrue(new ShooterTargetSpeed(20.0));
-        driver.a().toggleOnTrue(new ShooterIndexerFullSpeed());
-        driver.x().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(1.0))));
-        driver.y().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(-1.0))));
-        driver.povUp().toggleOnTrue(new IndexerFullSpeed());
-
 
         driver.start().onTrue(
                 drivetrain.runOnce(() -> drivetrain.seedFieldCentric())

@@ -180,6 +180,18 @@ public class Shooter extends SubsystemBase
         }
         right.setControl(new VelocityVoltage(velocity));
     }
+    
+    public void setEffectiveVelocity (LinearVelocity velocity)
+    {
+        if (isDisabled())
+        {
+            System.out.println("Quashing input to Shooter");
+            return;
+        }
+        left.setControl(new VelocityVoltage(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
+        right.setControl(new VelocityVoltage(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
+        targetVelocity = velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE;
+    }
 
     public void setVoltage (Voltage voltage)
     {
