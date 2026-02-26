@@ -330,7 +330,6 @@ public class RobotContainer
         driver.x().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(1.0))));
         driver.y().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(-1.0))));
         driver.povUp().toggleOnTrue(new IndexerFullSpeed());
-        //driver.a().onTrue(Shooter.getInstance().run(()->{Shooter.getInstance().setDutyCycle(0.1); System.out.println("test");}));
 
 
         driver.start().onTrue(

@@ -300,14 +300,12 @@ public class Shooter extends SubsystemBase
     
     private boolean isSimulated ()
     {
-        return false;
-        //return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Simulated;
+        return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Simulated;
     }
     
     private boolean isDisabled ()
     {
-        return false;
-        //return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Disabled;
+        return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Disabled;
     }
     
     public static Shooter getInstance()
