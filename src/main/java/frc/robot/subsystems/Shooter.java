@@ -51,8 +51,8 @@ public class Shooter extends SubsystemBase
 
     private Shooter()
     {
-        left = new TalonFX(Constants.Shooter.LEFT_ID);
-        right = new TalonFX(Constants.Shooter.RIGHT_ID);
+        left = new TalonFX(Constants.Shooter.LEFT_ID, Constants.CAN_SUPERSTRUCTURE);
+        right = new TalonFX(Constants.Shooter.RIGHT_ID, Constants.CAN_SUPERSTRUCTURE);
 
         config();
         
@@ -139,6 +139,16 @@ public class Shooter extends SubsystemBase
         return right.getVelocity().getValue();
     }
 
+    public LinearVelocity getLeftEffectiveVelocity()
+    {
+        return MetersPerSecond.of(getLeftVelocity().in(RotationsPerSecond) * Constants.Shooter.FLYWHEEL_CIRCUMFERANCE);
+    }
+    
+    public LinearVelocity getRightEffectiveVelocity()
+    {
+        return MetersPerSecond.of(getRightVelocity().in(RotationsPerSecond) * Constants.Shooter.FLYWHEEL_CIRCUMFERANCE);
+    }
+
     public void setVelocity (AngularVelocity velocity)
     {
         if (isDisabled())
@@ -192,6 +202,7 @@ public class Shooter extends SubsystemBase
         left.setControl(new DutyCycleOut(dutyCycle));
         right.setControl(new DutyCycleOut(dutyCycle));
     }
+    
     
     @Override
     public void periodic ()
@@ -289,12 +300,14 @@ public class Shooter extends SubsystemBase
     
     private boolean isSimulated ()
     {
-        return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Simulated;
+        return false;
+        //return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Simulated;
     }
     
     private boolean isDisabled ()
     {
-        return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Disabled;
+        return false;
+        //return Robot.instance.robotContainer.getStatus(RobotContainer.SHOOTER_INDEX) == SubsystemStatus.Disabled;
     }
     
     public static Shooter getInstance()

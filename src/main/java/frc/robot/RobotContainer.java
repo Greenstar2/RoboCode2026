@@ -273,7 +273,7 @@ public class RobotContainer
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
 
         boolean useDebuggingBindings = false; // mainly for sysid or debugging
-        boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
+        boolean useDefaultBindings = true; // in case ever the official controls don't work, use these as a backup to be able to drive around
         if (useDebuggingBindings) configureDebugBindings();
         else if (useDefaultBindings)
         {
@@ -319,9 +319,19 @@ public class RobotContainer
                         .withRotationalRate(-driver.getRightX() * MaxAngularRate * (isSlow ? Constants.ROTATION_SLOW_MULTIPLIER : 1.0)) // Drive counterclockwise with negative X (left)
                     ).withName("SwerveManual"));
 
+        /*
         driver.b().toggleOnTrue(new RunIntake());
         driver.a().toggleOnTrue(new ExtendIntake());
         driver.y().toggleOnTrue(new RetractIntake());
+        */
+
+        driver.b().toggleOnTrue(new ShooterTargetSpeed(20.0));
+        driver.a().toggleOnTrue(new ShooterIndexerFullSpeed());
+        driver.x().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(1.0))));
+        driver.y().onTrue(Hood.getInstance().run(()->Hood.getInstance().setVoltage(Volts.of(-1.0))));
+        driver.povUp().toggleOnTrue(new IndexerFullSpeed());
+        //driver.a().onTrue(Shooter.getInstance().run(()->{Shooter.getInstance().setDutyCycle(0.1); System.out.println("test");}));
+
 
         driver.start().onTrue(
                 drivetrain.runOnce(() -> drivetrain.seedFieldCentric())
