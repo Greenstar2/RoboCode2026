@@ -387,7 +387,7 @@ public class Constants
         public static final double MM_JERK = 0.0;
         */
 
-        public static final double MAX_VELOCITY = 0.1; // TODO rotations per second
+        public static final double MAX_VELOCITY = 0.15; // TODO rotations per second
         public static final double DEFAULT_VELOCITY = 0.0; // TODO rotations per second
 
         public static final double GEAR_RATIO = 1.0; // TODO

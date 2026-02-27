@@ -33,6 +33,7 @@ public class HoodManualDown extends Command
     @Override
     public void end(boolean interrupted)
     {
-        Hood.getInstance().moveToPosition(Hood.getInstance().getPosition());
+        Hood.getInstance().setVoltage(Volts.of(0.0));
+        //Hood.getInstance().moveToPosition(Hood.getInstance().getPosition());
     }
 }
