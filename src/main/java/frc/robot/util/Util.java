@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 
 import com.pathplanner.lib.util.FlippingUtil;
@@ -106,7 +107,7 @@ public class Util
         double dx = target.getX() - position.getX();
         double dy = target.getY() - position.getY();
         double db = Math.sqrt(dx * dx + dy * dy);
-        return Constants.DISTANCE_SHOOTVELO_RATIO * (db - Constants.Simulation.HUB_CONTENTS.getXWidth() / 2.0 - 6.0) + 10.0;
+        return Constants.DISTANCE_SHOOTVELO_RATIO * (db - Constants.Simulation.HUB_CONTENTS.getXWidth() / 2.0 - 6.0) + 10.0 - Constants.SPEED_OFFSET.in(MetersPerSecond);
     }
 
     public static Angle calculateShootPitch(CommandSwerveDrivetrain drivetrain)
