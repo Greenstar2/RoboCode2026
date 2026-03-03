@@ -197,9 +197,9 @@ public class Constants
         public static final double STATOR_CURRENT_LIMIT = 90.0;
         public static final double SUPPLY_CURRENT_LIMIT = 90.0;
 
-        public static final double MM_CRUISE_VELOCITY = 1.0; // TODO
-		public static final double MM_ACCELERATION = 4.0;  // TODO
-		public static final double MM_JERK = 8.0; // TODO
+        public static final double MM_CRUISE_VELOCITY = 2.0; // TODO
+		public static final double MM_ACCELERATION = 8.0;  // TODO
+		public static final double MM_JERK = 16.0; // TODO
 		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         
         public static final double GEAR_RATIO = 0.12;
