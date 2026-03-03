@@ -77,7 +77,7 @@ public class Hood extends SubsystemBase
         {
             TalonFXSimState simState = motor.getSimState();
             simState.Orientation = Constants.Hood.MECHANICAL_ORIENTATION;
-            simState.setMotorType(TalonFXSimState.MotorType.KrakenX60);
+            simState.setMotorType(TalonFXSimState.MotorType.KrakenX44);
         }
     }
 
@@ -186,7 +186,8 @@ public class Hood extends SubsystemBase
     
     public boolean readyToShoot ()
     {
-        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < Constants.EPSILON;
+        System.out.printf("Hood %sready to shoot\n", (Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < 0.01) ? "" : "not ");
+        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < 0.01;
     }
     
     public Angle getDesiredPosition()
@@ -196,7 +197,7 @@ public class Hood extends SubsystemBase
     
     public boolean isStalling()
     {
-        //if (isSimulated() && stallSimulator.get()) return true;
+        System.out.println("Hood stalling");
         return Math.abs(motor.getStatorCurrent().getValueAsDouble()) >= Constants.Hood.STALLING_CURRENT;
     }
 

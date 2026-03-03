@@ -258,6 +258,7 @@ public class Telemetry
                               Constants.Simulation.HUB_CONTENTS.getCenter().getY() - 0.5 * Constants.Simulation.HUB_CONTENTS.getYWidth(), 0.0)
         }
                               */
+        /*
         double posX = Robot.instance.robotContainer.drivetrain.getState().Pose.getX();
         double posY = Robot.instance.robotContainer.drivetrain.getState().Pose.getY();
         double rot = Robot.instance.robotContainer.drivetrain.getState().Pose.getRotation().getRadians();
@@ -278,7 +279,7 @@ public class Telemetry
             new Translation3d(startX, startY, 0),
             new Translation3d(midPointX, midPointY, 0)
         }
-            );
+            */;
     }
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) 

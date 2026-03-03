@@ -45,9 +45,10 @@ public class Constants
     
     public static final double EPSILON = 0.1;
 
-    public static final double ROBOT_DIAMETER = 0.889;
+    public static final double ROBOT_HEIGHT = 0.89535; // y direction when bot is faced in the positive x direction; that is, parallel to the intake face
+    public static final double ROBOT_WIDTH = 0.84455;
 
-    public static final Pose2d ZEROING_POSE = new Pose2d(4.028649 - ROBOT_DIAMETER / 2.0, 4.034536, new Rotation2d(0.0));
+    public static final Pose2d ZEROING_POSE = new Pose2d(3.581, 4.20288, new Rotation2d(0.0));
 
     public static final double TRANSLATION_SLOW_MULTIPLIER = 0.2;
     public static final double ROTATION_SLOW_MULTIPLIER = 0.4;
@@ -61,8 +62,8 @@ public class Constants
     public class Vision {
         public static final String kCamera1Name = "limelight";
         public static final Transform3d kRobotToCam1 = new Transform3d(
-                new Translation3d(Units.inchesToMeters(5.472), Units.inchesToMeters(-10.5), Units.inchesToMeters(7.482)),
-                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(26.1), 0)); // TODO bc this is copied from 2025 code
+                new Translation3d(Units.inchesToMeters(-10.5238), Units.inchesToMeters(9.5396), Units.inchesToMeters(9.2734)),
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(112.7732), Units.degreesToRadians(31.0351)));
 
         /*
         public static final String kCamera2Name = "limelight";
@@ -207,9 +208,9 @@ public class Constants
 		public static final double KI = 0.0; // TODO
 		public static final double KD = 0.038151; // TODO
 		
-        public static final double KS = 0.099507; //0.44797; // TODO
-        public static final double KV = 0.010491; // TODO
-        public static final double KA = 0.00057373; // TODO
+        public static final double KS = 0.10056; //0.44797; // TODO
+        public static final double KV = 0.010435; // TODO
+        public static final double KA = 0.00053474; // TODO
 		public static final double KG = 0.0; //0.06144; // TODO
 
         public static final double FORWARD_SOFTWARE_LIMIT_THRESHOLD = 4.82; // TODO

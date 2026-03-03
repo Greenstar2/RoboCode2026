@@ -289,15 +289,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             0, 0, 0, 0, 0
         );
         // LimelightHelpers.SetIMUMode(Constants.Vision.kCamera1Name);
-        LimelightHelpers.PoseEstimate EELimelightEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Vision.kCamera1Name);
-        LimelightHelpers.PoseEstimate intakeLimelightEstimate = null; //LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Vision.kCamera2Name);
+        LimelightHelpers.PoseEstimate limelight1Estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Vision.kCamera1Name);
+        LimelightHelpers.PoseEstimate limelight2Estimate = null; //LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Vision.kCamera2Name);
 
 
        // Only run vision updates if we see a tag
-        if ((EELimelightEstimate != null && EELimelightEstimate.tagCount > 0) ||
-            (intakeLimelightEstimate != null && intakeLimelightEstimate.tagCount > 0)) {
+        if ((limelight1Estimate != null && limelight1Estimate.tagCount > 0) ||
+            (limelight2Estimate != null && limelight2Estimate.tagCount > 0)) {
 
-            LimelightHelpers.PoseEstimate bestEstimate = selectBestEstimate(EELimelightEstimate, intakeLimelightEstimate);
+            LimelightHelpers.PoseEstimate bestEstimate = selectBestEstimate(limelight1Estimate, limelight2Estimate);
 
             SmartDashboard.putNumber("Drive/bestEstimateX", bestEstimate.pose.getX());
             SmartDashboard.putNumber("Drive/bestEstimateY", bestEstimate.pose.getY());
