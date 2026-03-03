@@ -64,10 +64,12 @@ public class Constants
                 new Translation3d(Units.inchesToMeters(5.472), Units.inchesToMeters(-10.5), Units.inchesToMeters(7.482)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(26.1), 0)); // TODO bc this is copied from 2025 code
 
+        /*
         public static final String kCamera2Name = "limelight";
         public static final Transform3d kRobotToCam2 = new Transform3d(
                 new Translation3d(Units.inchesToMeters(5.472), Units.inchesToMeters(-10.5), Units.inchesToMeters(7.482)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(26.1), 0)); // TODO bc this is copied from 2025 code
+                */
 
         public static final double linTagStdDevs = 0.1;
         public static final double angTagStdDevs = 999999;
@@ -80,7 +82,7 @@ public class Constants
 
         public static final PathConstraints constraints = new PathConstraints(
         6.0, 3.15,
-            Units.degreesToRadians(360), Units.degreesToRadians(540)); //to be updated
+            Units.degreesToRadians(360), Units.degreesToRadians(540));
     }
 
     public class Drivetrain 
@@ -205,9 +207,9 @@ public class Constants
 		public static final double KI = 0.0; // TODO
 		public static final double KD = 0.038151; // TODO
 		
-        public static final double KS = 0.0; //0.44797; // TODO
-        public static final double KV = 0.0; // TODO
-        public static final double KA = 0.0; // TODO
+        public static final double KS = 0.099507; //0.44797; // TODO
+        public static final double KV = 0.010491; // TODO
+        public static final double KA = 0.00057373; // TODO
 		public static final double KG = 0.0; //0.06144; // TODO
 
         public static final double FORWARD_SOFTWARE_LIMIT_THRESHOLD = 4.82; // TODO
@@ -438,7 +440,7 @@ public class Constants
         // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
         public static final Slot0Configs driveGains = new Slot0Configs()
                 .withKP(0.1).withKI(0).withKD(0)
-                .withKS(0).withKV(0.124);
+                .withKS(0.11411/*0*/).withKV(0.1150/*0.124*/);
 
         // The closed-loop output type to use for the steer motors;
         // This affects the PID/FF gains for the steer motors

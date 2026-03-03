@@ -249,7 +249,7 @@ public class Hood extends SubsystemBase
     }
     
     private SysIdRoutine sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.of(0.05).div(Seconds.of(1.)),Volts.of(0.3),Seconds.of(5.0)), 
+        new SysIdRoutine.Config(Volts.of(0.1).div(Seconds.of(1.)),Volts.of(0.7),Seconds.of(5.0)), 
         new SysIdRoutine.Mechanism((Voltage v)->motor.setControl(new VoltageOut(v)),
             (SysIdRoutineLog l)->l
                 .motor("Hood")

@@ -201,13 +201,7 @@ public class RobotContainer
             new ShooterDefaultSpeed()); // because a command instance cannot be scheduled to independent triggers
 
         // tested in sim
-<<<<<<< alignClimb
-        shoot = new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
-            .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
-            .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain)) && Hood.getInstance().readyToShoot()))
-            .andThen(new ShooterIndexerFullSpeed()) // load to shoot
-=======
-        shoot = //new DriveToPose(drivetrain, ()->AlignConstants.HUB)
+        shoot = //new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
             Commands.none()
             // .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
             //.alongWith(new IndependentCommand(new ShooterTargetSpeed(Util.calculateShootVelocity(drivetrain) + flywheelOffset)))
@@ -220,21 +214,13 @@ public class RobotContainer
 
             // i gave up on adding indexerfullspeed as its separate thing
             .andThen(track(new ShooterIndexerFullSpeed())) // load to shoot
->>>>>>> main
             .finallyDo(()->{
                 CommandScheduler.getInstance().schedule(stow.get());
             })
             .withName("Shoot");
 
         // tested in sim
-<<<<<<< alignClimb
-        pass = new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
-            .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
-            .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain)) && Hood.getInstance().readyToShoot()))
-            .andThen(new ShooterIndexerFullSpeed()) // load to shoot
-            .finallyDo(()->{
-=======
-        pass = /*new DriveToPose(drivetrain,
+        pass = /*new RotateToAngle(drivetrain,
             () -> onLeftSize() ? Constants.PASS_LEFT_TARGET_POSITION.toTranslation2d()
                                : Constants.PASS_RIGHT_TARGET_POSITION.toTranslation2d())*/
             Commands.none()
@@ -245,7 +231,6 @@ public class RobotContainer
             //                && Hood.getInstance().readyToShoot()))
             .andThen(new ShooterIndexerFullSpeed()) // load to pass
             .finallyDo(() -> {
->>>>>>> main
                 CommandScheduler.getInstance().schedule(stow.get());
             })
             .withName("Pass");
@@ -359,7 +344,6 @@ public class RobotContainer
             configureDriverBindings();
             configureOperatorBindings();
         }
-        
         drivetrain.registerTelemetry(Telemetry.getInstance()::telemeterize);
     }
 
@@ -376,15 +360,20 @@ public class RobotContainer
         driver.povLeft().onTrue(Commands.print("POV LEFT"));
         driver.povRight().onTrue(Commands.print("POV RIGHT"));
         */
-<<<<<<< alignClimb
-        driver.a().whileTrue(Shooter.getInstance().leftSysIdQuasistatic(Direction.kForward));
-        driver.b().whileTrue(Shooter.getInstance().leftSysIdQuasistatic(Direction.kReverse));
-        driver.x().whileTrue(Shooter.getInstance().leftSysIdDynamic(Direction.kForward));
-        driver.y().whileTrue(Shooter.getInstance().leftSysIdDynamic(Direction.kReverse));
+        driver.a().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
+        driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
+        driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
+        driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
+        /*
+        driver.a().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
+        driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
+        driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
+        driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
 
         driver.button(1).onTrue(new DriveToPose(drivetrain));
         driver.button(2).onTrue(alignLeft);
         driver.button(3).onTrue(alignRight);
+        */
 
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
@@ -393,18 +382,6 @@ public class RobotContainer
                         .withVelocityY(-driver.getLeftX() * MaxSpeed * (isSlow ? Constants.TRANSLATION_SLOW_MULTIPLIER : 1.0)) // Drive left with negative X (left)
                         .withRotationalRate(-driver.getRightX() * MaxAngularRate * (isSlow ? Constants.ROTATION_SLOW_MULTIPLIER : 1.0)) // Drive counterclockwise with negative X (left)
                     ).withName("SwerveManual"));
-=======
-        driver.a().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
-        driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
-        driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
-        driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
-        /*
-        driver.a().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kForward));
-        driver.b().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kForward));
-        driver.x().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kReverse));
-        driver.y().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kReverse));
-        */
->>>>>>> main
     }
 
     private void configureDefaultBindings()
