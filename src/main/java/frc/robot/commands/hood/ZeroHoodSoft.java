@@ -33,7 +33,7 @@ public class ZeroHoodSoft extends Command
         if (!interrupted)
         {
             System.out.println("Soft zero done");
-            Hood.getInstance().setPosition(Rotation.of(0.0));
+            Hood.getInstance().setPosition(Degrees.of(0.0));
         }
         Hood.getInstance().setVoltage(Volts.of(0.0));
     }

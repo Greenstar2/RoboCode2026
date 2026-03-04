@@ -46,7 +46,7 @@ public class Hood extends SubsystemBase
     private double desiredPosition; // rotations
     
     private final DCMotorSim sim = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 1.0, Constants.Hood.GEAR_RATIO),
+        LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.001, Constants.Hood.GEAR_RATIO),
         DCMotor.getKrakenX44(1));
 
         /*
@@ -127,6 +127,11 @@ public class Hood extends SubsystemBase
         this.desiredPosition = desiredPosition.in(Rotations);
         motor.setControl(new PositionVoltage(desiredPosition));
     }
+
+    public void moveToEffectivePosition(Angle desiredPosition)
+    {
+        moveToPosition(effectiveToMechanism(desiredPosition));
+    }
     
     public Angle getPosition()
     {
@@ -186,7 +191,6 @@ public class Hood extends SubsystemBase
     
     public boolean readyToShoot ()
     {
-        System.out.printf("Hood %sready to shoot\n", (Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < 0.01) ? "" : "not ");
         return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < 0.01;
     }
     
@@ -197,7 +201,6 @@ public class Hood extends SubsystemBase
     
     public boolean isStalling()
     {
-        System.out.println("Stator Current: " + motor.getStatorCurrent().getValueAsDouble());
         return Math.abs(motor.getStatorCurrent().getValueAsDouble()) >= Constants.Hood.STALLING_CURRENT;
     }
 
@@ -213,31 +216,20 @@ public class Hood extends SubsystemBase
     {
         if (isSimulated())
         {
-            long newTime = System.currentTimeMillis();
-            System.out.println("Loop time: " + (newTime - lastTime) / 1000.0 + "s");
-            lastTime = newTime;
-
             TalonFXSimState simState = motor.getSimState();
 
             // set the supply voltage of the TalonFX
             simState.setSupplyVoltage(RobotController.getBatteryVoltage());
 
-            // get the motor voltage of the TalonFX
-            Voltage motorVoltage = simState.getMotorVoltageMeasure();
-
             // use the motor voltage to calculate new position and velocity
             // using WPILib's DCMotorSim class for physics simulation
-            sim.setInputVoltage(motorVoltage.in(Volts));
+            sim.setInputVoltage(simState.getMotorVoltageMeasure().in(Volts));
             sim.update(0.020); // assume 20 ms loop time
-
-            Angle simAngle = sim.getAngularPosition();
-            System.out.printf("simAngle: %f degrees\n", simAngle.in(Degrees));
-            sim.setAngle(simAngle.in(Radians));
 
             // apply the new rotor position and velocity to the TalonFX;
             // note that this is rotor position/velocity (before gear ratio), but
             // DCMotorSim returns mechanism position/velocity (after gear ratio)
-            simState.setRawRotorPosition(simAngle.times(Constants.Hood.GEAR_RATIO));
+            simState.setRawRotorPosition(sim.getAngularPosition().times(Constants.Hood.GEAR_RATIO));
             simState.setRotorVelocity(sim.getAngularVelocity().times(Constants.Hood.GEAR_RATIO));
         }
     }
@@ -278,5 +270,25 @@ public class Hood extends SubsystemBase
     {
         if (instance == null) instance = new Hood();
         return instance;
+    }
+
+    public static Angle effectiveToMechanism(Angle effectivePitch)
+    {
+        return Degrees.of(75.0).minus(effectivePitch);
+    }
+
+    public static Angle mechanismToEffective(Angle mechanismPitch)
+    {
+        return Degrees.of(75.0).minus(mechanismPitch);
+    }
+
+    public static double effectiveToMechanism(double effectivePitchDegrees)
+    {
+        return 75.0 - effectivePitchDegrees;
+    }
+
+    public static double mechanismToEffective(double mechanismPitchDegrees)
+    {
+        return 75.0 - mechanismPitchDegrees;
     }
 }

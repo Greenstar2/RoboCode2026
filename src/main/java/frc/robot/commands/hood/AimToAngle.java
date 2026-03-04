@@ -12,11 +12,11 @@ import frc.robot.util.Util;
 public class AimToAngle extends Command
 {
     private DoubleSupplier pitcher;
-    private double pitch = 0.0; // rotations
+    private double pitch = 0.0; // degrees
 
     /**
      * 
-     * @param pitch rotations
+     * @param pitch degrees
     */
     public AimToAngle (DoubleSupplier pitcher)
     {
@@ -34,8 +34,8 @@ public class AimToAngle extends Command
     {
         pitch = pitcher.getAsDouble();
         
-        Hood.getInstance().moveToPosition(Rotations.of(pitch));
-        System.out.println("Aiming: " + pitch);
+        Hood.getInstance().moveToEffectivePosition(Degrees.of(pitch));
+        System.out.println("Aiming: " + pitch + "°");
     }
 
     @Override

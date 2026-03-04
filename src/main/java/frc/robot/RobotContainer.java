@@ -270,10 +270,12 @@ public class RobotContainer
         testCommandChooser.addOption("Climb/ClimbToLevel[2]", new ClimbToLevel(2));
         testCommandChooser.addOption("Climb/ClimbToLevel[3]", new ClimbToLevel(3));
         testCommandChooser.addOption("Climb/MoveDownUntilStall", new MoveDownUntilStall());
-        testCommandChooser.addOption("Hood/AimToAngle[0]", new AimToAngle(0.0));
-        testCommandChooser.addOption("Hood/AimToAngle[1]", new AimToAngle(1.0));
-        testCommandChooser.addOption("Hood/AimToAngle[2]", new AimToAngle(2.0));
-        testCommandChooser.addOption("Hood/AimToAngle[3", new AimToAngle(4.0));
+        testCommandChooser.addOption("Hood/AimToAngle[" + Hood.mechanismToEffective(Constants.Hood.MIN_ANGLE) + "°]", 
+            new AimToAngle(Hood.mechanismToEffective(Constants.Hood.MIN_ANGLE)));
+        testCommandChooser.addOption("Hood/AimToAngle[65°]", new AimToAngle(60.0));
+        testCommandChooser.addOption("Hood/AimToAngle[70°]", new AimToAngle(70.0));
+        testCommandChooser.addOption("Hood/AimToAngle[" + Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE) + "°]", 
+            new AimToAngle(Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE)));
         testCommandChooser.addOption("Hood/ZeroHood", new ZeroHood());
         testCommandChooser.addOption("Hood/ZeroHoodSoft", new ZeroHoodSoft());
         testCommandChooser.addOption("Hood/HoodManualUp", new HoodManualUp());
@@ -589,7 +591,7 @@ public class RobotContainer
             else direction = PassDirection.Right;
         }));
 
-        //operator.y().onTrue(track(new AimToAngle(Constants.Hood.MAX_ANGLE)));
+        operator.y().onTrue(track(new AimToAngle(Constants.Hood.MAX_ANGLE)));
         operator.x().onTrue(track(new IndependentCommand(new RunIntake().withTimeout(1.5))
             .andThen(Commands.runOnce(()->intakeTriggered = true))
             .andThen(new RetractIntake())
@@ -598,7 +600,7 @@ public class RobotContainer
                 intakeExtended = false;
             }
             ))));
-        //operator.a().onTrue(track(new AimToAngle(Constants.Hood.MIN_ANGLE)));
+        operator.a().onTrue(track(new AimToAngle(Constants.Hood.MIN_ANGLE)));
         operator.b().onTrue(track(new ExtendIntake()
             .andThen(Commands.runOnce(()->
             {

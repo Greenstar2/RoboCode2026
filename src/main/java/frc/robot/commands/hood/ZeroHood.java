@@ -17,7 +17,7 @@ public class ZeroHood extends Command
     @Override
     public void initialize()
     {
-        Hood.getInstance().moveToPosition(Rotations.of(0.0));
+        Hood.getInstance().moveToPosition(Degrees.of(0.0));
     }
 
     @Override
