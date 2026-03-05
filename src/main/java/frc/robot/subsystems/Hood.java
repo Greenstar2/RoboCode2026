@@ -155,7 +155,7 @@ public class Hood extends SubsystemBase
             System.out.println("Quashing input to Hood");
             return;
         }
-        motor.setPosition(position);
+        motor.setPosition(position, 0.5);
     }
 
     public void setVelocity(AngularVelocity velocity)
@@ -191,7 +191,7 @@ public class Hood extends SubsystemBase
     
     public boolean readyToShoot ()
     {
-        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < 0.01;
+        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < Degrees.of(0.25).in(Rotations);
     }
     
     public Angle getDesiredPosition()

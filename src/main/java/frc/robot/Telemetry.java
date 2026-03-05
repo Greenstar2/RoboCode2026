@@ -11,6 +11,12 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import static edu.wpi.first.units.Units.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+
+import com.pathplanner.lib.util.FlippingUtil;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
@@ -25,6 +31,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Drivetrain;
 import frc.robot.simulation.SimulationState;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
@@ -32,7 +39,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterIndexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeExtension;
+import frc.robot.util.Util;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Telemetry 
 {
@@ -43,6 +52,7 @@ public class Telemetry
 
     private StringPublisher mostRecentAim = table.getStringTopic("Most Recent Aim").publish();
     private DoublePublisher hoodOffset = table.getDoubleTopic("Hood Offset").publish();
+    private DoublePublisher shooterOffset = table.getDoubleTopic("Shooter Offset").publish();
 
     private NetworkTable intake = table.getSubTable("Intake");
     private StringPublisher intakeCommand = intake.getStringTopic("main command").publish();
@@ -53,6 +63,7 @@ public class Telemetry
     private DoublePublisher intakeExtensionPosition = intake.getDoubleTopic("extension position (rot)").publish();
     private DoublePublisher intakeExtensionVelocity = intake.getDoubleTopic("extension velocity (rot per s)").publish();
     private DoublePublisher intakeExtensionVoltage = intake.getDoubleTopic("extension voltage (V)").publish();
+    private DoublePublisher intakeExtensionCurrent = intake.getDoubleTopic("current (A)").publish();
 
     /*
     private NetworkTable turret = table.getSubTable("Turret");
@@ -129,6 +140,7 @@ public class Telemetry
     private final StructArrayPublisher<SwerveModulePosition> driveModulePositions = driveStateTable.getStructArrayTopic("ModulePositions", SwerveModulePosition.struct).publish();
     private final DoublePublisher driveTimestamp = driveStateTable.getDoubleTopic("Timestamp").publish();
     private final DoublePublisher driveOdometryFrequency = driveStateTable.getDoubleTopic("OdometryFrequency").publish();
+    private final DoublePublisher distanceToShoot = driveStateTable.getDoubleTopic("DistanceToShoot").publish();
 
     /* Robot pose for field positioning */
     private final NetworkTable poses = tableInstance.getTable("Pose");
@@ -175,6 +187,7 @@ public class Telemetry
     {
         mostRecentAim.set(Robot.instance.robotContainer.mostRecentAim ? "Pass" : "Shoot");
         hoodOffset.set(Robot.instance.robotContainer.pitchOffset);
+        shooterOffset.set(Robot.instance.robotContainer.flywheelOffset);
 
         Command intakeCommand = Intake.getInstance().getCurrentCommand();
         this.intakeCommand.set(intakeCommand == null ? "" : intakeCommand.getName());
@@ -186,6 +199,7 @@ public class Telemetry
         intakeExtensionPosition.set(IntakeExtension.getInstance().getPosition().in(Rotations));
         intakeExtensionVelocity.set(IntakeExtension.getInstance().getVelocity().in(RotationsPerSecond));
         intakeExtensionVoltage.set(IntakeExtension.getInstance().getVoltage().in(Volts));
+        intakeExtensionCurrent.set(IntakeExtension.getInstance().getStatorCurrent().in(Amps));
 
         /*
         Command turretCommand = Turret.getInstance().getCurrentCommand();
@@ -298,6 +312,10 @@ public class Telemetry
         driveModulePositions.set(state.ModulePositions);
         driveTimestamp.set(state.Timestamp);
         driveOdometryFrequency.set(1.0 / state.OdometryPeriod);
+        Translation2d targetPose = (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) ? 
+                    Constants.HUB_TARGET_POSITION.toTranslation2d() : 
+                    FlippingUtil.flipFieldPosition(Constants.HUB_TARGET_POSITION.toTranslation2d());
+        distanceToShoot.set(state.Pose.getTranslation().getDistance(targetPose));
 
         /* Also write to log file */
         SignalLogger.writeStruct("DriveState/Pose", Pose2d.struct, state.Pose);

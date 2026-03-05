@@ -13,6 +13,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -82,6 +83,11 @@ public class IntakeExtension extends SubsystemBase
     public Angle getPosition()
     {
         return motor.getPosition().getValue();
+    }
+
+    public Current getStatorCurrent()
+    {
+        return motor.getStatorCurrent().getValue();
     }
    
     public void setVoltage (Voltage voltage)

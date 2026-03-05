@@ -142,7 +142,7 @@ public class Constants
         public static final double STATOR_CURRENT_LIMIT = 90.0;
         public static final double SUPPLY_CURRENT_LIMIT = 90.0;
 
-        public static final double INTAKE_VOLTAGE = 6.4;
+        public static final double INTAKE_VOLTAGE = 5.5;
         public static final double DEFAULT_INTAKE_VOLTAGE = 0.0;
         public static final double EJECT_VOLTAGE = -2.5;
 
@@ -169,7 +169,7 @@ public class Constants
         public static final double SUPPLY_CURRENT_LIMIT = 90.0;
 
         public static final double EXTENDING_VOLTAGE = 2.5;
-        public static final double RETRACTING_VOLTAGE = -2.5;
+        public static final double RETRACTING_VOLTAGE = -1.75;
 
         public static final double KP = 0.0023821;
 		public static final double KI = 0.0;
@@ -184,7 +184,7 @@ public class Constants
         
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
 
-        public static final double STALLING_CURRENT_EXTEND = 20;
+        public static final double STALLING_CURRENT_EXTEND = 16;
         public static final double STALLING_CURRENT_RETRACT = 20;
 
         public static final double MIN_HEIGHT = 0.0; // TODO
@@ -203,15 +203,15 @@ public class Constants
 		public static final double MM_JERK = 16.0; // TODO
 		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         
-        public static final double GEAR_RATIO = 0.0073168947; // sensor to hood angle
+        public static final double GEAR_RATIO = 137.67; // sensor to hood angle
 
-		public static final double KP = 1.0; // TODO
-		public static final double KI = 0.0; // TODO
+		public static final double KP = 350.0; // TODO
+		public static final double KI = 50.0; // TODO
 		public static final double KD = 0.0; // TODO
 		
-        public static final double KS = 0.0;//0.10056; //0.44797; // TODO
-        public static final double KV = 0.0;//0.010435; // TODO
-        public static final double KA = 0.0;//0.00053474; // TODO
+        public static final double KS = 0.26106;//0.10056; //0.44797; // TODO
+        public static final double KV = 0.63103;//0.010435; // TODO
+        public static final double KA = 3.1495;//0.00053474; // TODO
 		public static final double KG = 0.0; //0.06144; // TODO
 
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
@@ -409,7 +409,7 @@ public class Constants
         public static final double SUPPLY_CURRENT_LIMIT = 80.0;
 
         public static final double DEFAULT_VOLTAGE = 0.0;
-        public static final double INTAKE_VOLTAGE = 5.5; // TODO
+        public static final double INTAKE_VOLTAGE = 6.0; // TODO
         
         public static final double KS = 0.0048438; // TODO
         public static final double KV = 0.12361; // TODO
@@ -593,7 +593,7 @@ public class Constants
     public static final double HARDCODE_VELOCITY = 10.0;
 
     public static final double PITCH_OFFSET_UNIT = 5.0; // TODO
-    public static final double FLYWHEEL_OFFSET_UNIT = 2.5; // TODO
+    public static final double FLYWHEEL_OFFSET_UNIT = 1.0; // TODO
 
     public static final double DISTANCE_SHOOTVELO_RATIO = 0.7400067;
 

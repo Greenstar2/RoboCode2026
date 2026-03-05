@@ -62,7 +62,7 @@ public class Util
 
     public static void init ()
     {
-        addData(0.5, 7.0, 75.0);
+        // addData(0.5, 7.0, 75.0);
     }
 
     public static double bottomLeftX (Rectangle2d r)
@@ -167,7 +167,6 @@ public class Util
         Translation2d targetPose = (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) ? 
                     Constants.HUB_TARGET_POSITION.toTranslation2d() : 
                     FlippingUtil.flipFieldPosition(Constants.HUB_TARGET_POSITION.toTranslation2d());
-
         return drivetrainPose.getDistance(targetPose);
     }
     

@@ -121,7 +121,7 @@ public class RobotContainer
     private boolean intakeTriggered = false; // true if intake has been enabled
     private boolean intakeExtended = true; //true if intake and hopper have been extended // TODO reverse
     public double pitchOffset = 0.0;
-    private double flywheelOffset = 0.0;
+    public double flywheelOffset = 0.0;
   
     private List<Command> commands = new ArrayList<>(40);
   
@@ -204,15 +204,14 @@ public class RobotContainer
         shoot = //new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
             Commands.none()
             // .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees) + pitchOffset))
-            //.alongWith(new IndependentCommand(new ShooterTargetSpeed(Util.calculateShootVelocity(drivetrain) + flywheelOffset)))
+            // .alongWith(new IndependentCommand(new ShooterTargetSpeed(Util.calculateShootVelocity(drivetrain) + flywheelOffset)))
+            .alongWith(new AimToAngle(75.0))
             .alongWith(new IndependentCommand(new ShooterTargetSpeed(8.0)))
             // .andThen(new WaitUntilCommand(
             //     ()->Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain))
-            //     //  && Hood.getInstance().readyToShoot()
+            //      && Hood.getInstance().readyToShoot()
             //     ))
             .andThen(new IndependentCommand(track(new IndexerFullSpeed())))
-
-            // i gave up on adding indexerfullspeed as its separate thing
             .andThen(track(new ShooterIndexerFullSpeed())) // load to shoot
             .finallyDo(()->{
                 CommandScheduler.getInstance().schedule(stow.get());
@@ -224,11 +223,11 @@ public class RobotContainer
             () -> onLeftSize() ? Constants.PASS_LEFT_TARGET_POSITION.toTranslation2d()
                                : Constants.PASS_RIGHT_TARGET_POSITION.toTranslation2d())*/
             Commands.none()
-            //.alongWith(new AimToAngle(() -> Util.calculatePassPitch(drivetrain).in(Degrees) + pitchOffset))
+            .alongWith(new AimToAngle(() -> Util.calculatePassPitch(drivetrain).in(Degrees) + pitchOffset))
             .andThen(new IndependentCommand(new ShooterTargetSpeed(Util.calculatePassVelocity(drivetrain) + flywheelOffset)))
-            //.andThen(new WaitUntilCommand(
-            //        () -> Shooter.getInstance().readyToShoot(Util.calculatePassVelocity(drivetrain))
-            //                && Hood.getInstance().readyToShoot()))
+            .andThen(new WaitUntilCommand(
+                    () -> Shooter.getInstance().readyToShoot(Util.calculatePassVelocity(drivetrain))
+                            && Hood.getInstance().readyToShoot()))
             .andThen(new ShooterIndexerFullSpeed()) // load to pass
             .finallyDo(() -> {
                 CommandScheduler.getInstance().schedule(stow.get());
@@ -245,23 +244,23 @@ public class RobotContainer
 
         revShoot = 
                 Commands.runOnce(()->mostRecentAim = false)
-            // .andThen(new IndependentCommand(new ShooterIndexerDefaultSpeed()))
-            //.andThen(
-            //    new IndependentCommand(new ShooterTargetSpeed(()->Util.calculateShootVelocity(drivetrain) + flywheelOffset)))
+            .andThen(new IndependentCommand(new ShooterIndexerDefaultSpeed()))
+            .andThen(
+                new IndependentCommand(new ShooterTargetSpeed(()->Util.calculateShootVelocity(drivetrain) + flywheelOffset)))
                 //new IndependentCommand(new ShooterTargetSpeed(5.0)))
-            // .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot()))
-            // // .andThen(
-            // //     Commands.runOnce(()->driver.setRumble(RumbleType.kBothRumble, 1.0)))
+            .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot()))
+            //.andThen(
+            //     Commands.runOnce(()->driver.setRumble(RumbleType.kBothRumble, 1.0)))
                 .withName("RevShoot");
 
         revPass = 
                 Commands.runOnce(()->mostRecentAim = true)
-            //.andThen(new IndependentCommand(new ShooterIndexerDefaultSpeed()))
-            //.andThen(
-            //    new IndependentCommand(new ShooterTargetSpeed(()->Util.calculatePassVelocity(drivetrain) + flywheelOffset)))
-            //.andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot()))
-            // .andThen(
-            //     Commands.runOnce(()->driver.setRumble(RumbleType.kBothRumble, 1.0)))
+            .andThen(new IndependentCommand(new ShooterIndexerDefaultSpeed()))
+            .andThen(
+                new IndependentCommand(new ShooterTargetSpeed(()->Util.calculatePassVelocity(drivetrain) + flywheelOffset)))
+            .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot()))
+             .andThen(
+                 Commands.runOnce(()->driver.setRumble(RumbleType.kBothRumble, 1.0)))
                 .withName("RevPass");
 
 
@@ -272,7 +271,7 @@ public class RobotContainer
         testCommandChooser.addOption("Climb/MoveDownUntilStall", new MoveDownUntilStall());
         testCommandChooser.addOption("Hood/AimToAngle[" + Hood.mechanismToEffective(Constants.Hood.MIN_ANGLE) + "°]", 
             new AimToAngle(Hood.mechanismToEffective(Constants.Hood.MIN_ANGLE)));
-        testCommandChooser.addOption("Hood/AimToAngle[65°]", new AimToAngle(60.0));
+        testCommandChooser.addOption("Hood/AimToAngle[65°]", new AimToAngle(65.0));
         testCommandChooser.addOption("Hood/AimToAngle[70°]", new AimToAngle(70.0));
         testCommandChooser.addOption("Hood/AimToAngle[" + Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE) + "°]", 
             new AimToAngle(Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE)));
@@ -332,7 +331,7 @@ public class RobotContainer
         Indexer.getInstance().setDefaultCommand(new IndexerDefaultSpeed());
         ShooterIndexer.getInstance().setDefaultCommand(new ShooterIndexerDefaultSpeed());
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
-        //Hood.getInstance().setDefaultCommand(new ZeroHood());
+        // Hood.getInstance().setDefaultCommand(new ZeroHood());
 
         boolean useDebuggingBindings = false; // mainly for sysid or debugging
         boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
@@ -351,12 +350,12 @@ public class RobotContainer
 
     private void configureDebugBindings()
     {
-        /*
-        driver.button(1).onTrue(Indexer.getInstance().sysIdQuasistatic(Direction.kForward));
-        driver.button(2).onTrue(Indexer.getInstance().sysIdQuasistatic(Direction.kReverse));
-        driver.button(3).onTrue(Indexer.getInstance().sysIdDynamic(Direction.kForward));
-        driver.button(4).onTrue(Indexer.getInstance().sysIdDynamic(Direction.kReverse));
+        driver.button(1).onTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
+        driver.button(2).onTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
+        driver.button(3).onTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
+        driver.button(4).onTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
 
+        /*
         driver.povUp().onTrue(Commands.print("POV UP"));
         driver.povDown().onTrue(Commands.print("POV DOWN"));
         driver.povLeft().onTrue(Commands.print("POV LEFT"));
@@ -591,7 +590,7 @@ public class RobotContainer
             else direction = PassDirection.Right;
         }));
 
-        operator.y().onTrue(track(new AimToAngle(Constants.Hood.MAX_ANGLE)));
+        operator.y().whileTrue(track(new HoodManualUp()));
         operator.x().onTrue(track(new IndependentCommand(new RunIntake().withTimeout(1.5))
             .andThen(Commands.runOnce(()->intakeTriggered = true))
             .andThen(new RetractIntake())
@@ -600,7 +599,7 @@ public class RobotContainer
                 intakeExtended = false;
             }
             ))));
-        operator.a().onTrue(track(new AimToAngle(Constants.Hood.MIN_ANGLE)));
+        operator.a().whileTrue(track(new HoodManualDown()));
         operator.b().onTrue(track(new ExtendIntake()
             .andThen(Commands.runOnce(()->
             {
