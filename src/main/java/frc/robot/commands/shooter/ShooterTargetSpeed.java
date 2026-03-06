@@ -12,12 +12,27 @@ import frc.robot.util.Util;
 
 public class ShooterTargetSpeed extends Command
 {
-    DoubleSupplier targetSpeedSupplier;
-    double targetSpeed;
+    DoubleSupplier leftTargetSpeedSupplier;
+    double leftTargetSpeed;
+    
+    DoubleSupplier rightTargetSpeedSupplier;
+    double rightTargetSpeed;
+    
+    public ShooterTargetSpeed(DoubleSupplier leftTargetSpeedSupplier, DoubleSupplier rightTargetSpeedSupplier)
+    {
+        this.leftTargetSpeedSupplier = leftTargetSpeedSupplier;
+        this.rightTargetSpeedSupplier = rightTargetSpeedSupplier;
+        addRequirements(Shooter.getInstance());
+    }
+
+    public ShooterTargetSpeed(double leftTargetSpeed, double rightTargetSpeed)
+    {
+        this(()->leftTargetSpeed, ()->rightTargetSpeed);
+    }
+    
     public ShooterTargetSpeed(DoubleSupplier targetSpeedSupplier)
     {
-        this.targetSpeedSupplier = targetSpeedSupplier;
-        addRequirements(Shooter.getInstance());
+        this(targetSpeedSupplier, targetSpeedSupplier);
     }
 
     public ShooterTargetSpeed(double targetSpeed)
@@ -33,8 +48,10 @@ public class ShooterTargetSpeed extends Command
     @Override
     public void execute()
     {
-        targetSpeed = Util.bound(targetSpeedSupplier.getAsDouble(), 0.0, Constants.Shooter.MAX_VELOCITY);
-        Shooter.getInstance().setEffectiveVelocity(MetersPerSecond.of(targetSpeed));
+        leftTargetSpeed = Util.bound(leftTargetSpeedSupplier.getAsDouble(), 0.0, Constants.Shooter.MAX_VELOCITY);
+        Shooter.getInstance().setLeftEffectiveVelocity(MetersPerSecond.of(leftTargetSpeed));
+        rightTargetSpeed = Util.bound(rightTargetSpeedSupplier.getAsDouble(), 0.0, Constants.Shooter.MAX_VELOCITY);
+        Shooter.getInstance().setRightEffectiveVelocity(MetersPerSecond.of(rightTargetSpeed));
     }
 
     @Override

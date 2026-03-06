@@ -47,7 +47,8 @@ public class Shooter extends SubsystemBase
         LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(2), 0.001, Constants.Shooter.GEAR_RATIO),
         DCMotor.getKrakenX60(2));
 
-    private double targetVelocity = 0.0;
+    private double leftTargetVelocity = 0.0;
+    private double rightTargetVelocity = 0.0;
 
     private Shooter()
     {
@@ -149,16 +150,30 @@ public class Shooter extends SubsystemBase
         return MetersPerSecond.of(getRightVelocity().in(RotationsPerSecond) * Constants.Shooter.FLYWHEEL_CIRCUMFERANCE);
     }
 
+    public AngularVelocity getLeftTargetVelocity()
+    {
+        return RotationsPerSecond.of(leftTargetVelocity);
+    }
+
+    public LinearVelocity getLeftEffectiveTargetVelocity()
+    {
+        return MetersPerSecond.of(leftTargetVelocity * Constants.Shooter.FLYWHEEL_CIRCUMFERANCE);
+    }
+
+    public AngularVelocity getRightTargetVelocity()
+    {
+        return RotationsPerSecond.of(rightTargetVelocity);
+    }
+
+    public LinearVelocity getRightEffectiveTargetVelocity()
+    {
+        return MetersPerSecond.of(rightTargetVelocity * Constants.Shooter.FLYWHEEL_CIRCUMFERANCE);
+    }
+
     public void setVelocity (AngularVelocity velocity)
     {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Shooter");
-            return;
-        }
-        left.setControl(new VelocityVoltage(velocity));
-        right.setControl(new VelocityVoltage(velocity));
-        targetVelocity = velocity.in(Rotations.per(Second));
+        setLeftVelocity(velocity);
+        setRightVelocity(velocity);
     }
 
     public void setLeftVelocity(AngularVelocity velocity)
@@ -169,6 +184,12 @@ public class Shooter extends SubsystemBase
             return;
         }
         left.setControl(new VelocityVoltage(velocity));
+        leftTargetVelocity = velocity.in(RotationsPerSecond);
+    }
+
+    public void setLeftEffectiveVelocity(LinearVelocity velocity)
+    {
+        setLeftVelocity(RotationsPerSecond.of(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
     }
 
     public void setRightVelocity(AngularVelocity velocity)
@@ -179,18 +200,18 @@ public class Shooter extends SubsystemBase
             return;
         }
         right.setControl(new VelocityVoltage(velocity));
+        rightTargetVelocity = velocity.in(RotationsPerSecond);
+    }
+
+    public void setRightEffectiveVelocity(LinearVelocity velocity)
+    {
+        setRightVelocity(RotationsPerSecond.of(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
     }
     
     public void setEffectiveVelocity (LinearVelocity velocity)
     {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Shooter");
-            return;
-        }
-        left.setControl(new VelocityVoltage(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
-        right.setControl(new VelocityVoltage(velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE));
-        targetVelocity = velocity.in(MetersPerSecond) / Constants.Shooter.FLYWHEEL_CIRCUMFERANCE;
+        setLeftEffectiveVelocity(velocity);
+        setRightEffectiveVelocity(velocity);
     }
 
     public void setVoltage (Voltage voltage)
@@ -268,8 +289,8 @@ public class Shooter extends SubsystemBase
     
     public boolean readyToShoot()
     {
-        return Math.abs(left.getVelocity().getValue().in(Rotations.per(Second)) - targetVelocity) < Constants.EPSILON &&
-               Math.abs(right.getVelocity().getValue().in(Rotations.per(Second)) - targetVelocity) < Constants.EPSILON;
+        return Math.abs(left.getVelocity().getValue().in(Rotations.per(Second)) - leftTargetVelocity) < Constants.EPSILON &&
+               Math.abs(right.getVelocity().getValue().in(Rotations.per(Second)) - rightTargetVelocity) < Constants.EPSILON;
     }
     
     public boolean readyToShoot(double targetVelocity)
