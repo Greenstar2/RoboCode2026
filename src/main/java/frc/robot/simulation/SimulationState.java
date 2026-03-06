@@ -234,7 +234,7 @@ public class SimulationState
             switch (fuelPositions[i].location)
             {
             case Robot:
-                fuelPositions[i].state.pose = new Pose3d(Util.packElWithRot(posX, posY, 0.0, Robot.instance.robotContainer.drivetrain.getState().Pose.getRotation().getRadians(), Constants.ROBOT_WIDTH, Constants.ROBOT_HEIGHT, FUEL_DIAMETER, fuelsInRobot), new Rotation3d(Robot.instance.robotContainer.drivetrain.getState().Pose.getRotation()));
+                fuelPositions[i].state.pose = new Pose3d(Util.packElWithRot(posX - Math.cos(rot)*Constants.ROBOT_WIDTH/2, posY - Math.sin(rot)*Constants.ROBOT_HEIGHT/2, 0.0, Robot.instance.robotContainer.drivetrain.getState().Pose.getRotation().getRadians(), Constants.ROBOT_WIDTH, Constants.ROBOT_HEIGHT, FUEL_DIAMETER, fuelsInRobot), new Rotation3d(Robot.instance.robotContainer.drivetrain.getState().Pose.getRotation()));
                 fuelsInRobot++;
                 break;
             case BlueHub:

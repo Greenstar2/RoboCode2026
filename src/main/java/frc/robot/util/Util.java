@@ -120,12 +120,18 @@ public class Util
 
     public static Translation3d packElWithRot (double x, double y, double bottomZ, double rad, double xside, double yside, double sphereDiameter, int num)
     {
-        double x0 = x + 3*Math.cos(Math.PI/4 + rad) * Math.sqrt(2*sphereDiameter*sphereDiameter/4); // Starting x of first fuel in robot
-        double y0 = y + 3*Math.sin(Math.PI/4 + rad) * Math.sqrt(2*sphereDiameter*sphereDiameter/4); // Starting y of first fuel in robot
+        double eX = 0.092; // Error Adjustment
+        double eY = 0.092; // Error Adjustment
+        
+        double cX = (xside - ((int) (xside / sphereDiameter) - 1) * sphereDiameter) / 2; // Centering Adjustment
+        double cY = (yside - ((int) (yside / sphereDiameter) - 1) * sphereDiameter) / 2; // Centering Adjustment
+        double x0 = x + Math.cos(Math.PI/4 + rad) * (sphereDiameter/2 + cX + eX); // Starting x of first fuel in robot
+        double y0 = y + Math.sin(Math.PI/4 + rad) * (sphereDiameter/2 + cY + eY); // Starting y of first fuel in robot
+
         double z0 = bottomZ; // Starting z of first fuel
 
-        int xn = (int) (xside / sphereDiameter) - 1; // num of fuel that can fit in x direction 
-        int yn = (int) (yside / sphereDiameter) - 1; // num of fuel that can fit in y direction
+        int xn = (int) (xside / sphereDiameter) - 1; // num of fuel that can fit in x direction adjusting for bumper thickness
+        int yn = (int) (yside / sphereDiameter) - 1; // num of fuel that can fit in y direction adjusting for bumper thickness
 
         int zN = num / (xn * yn); // layer number for current fuel
 
