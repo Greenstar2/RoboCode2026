@@ -190,7 +190,7 @@ public class Util
         double dx = target.getX() - position.getX();
         double dy = target.getY() - position.getY();
         double db = Math.sqrt(dx * dx + dy * dy);
-        return Constants.DISTANCE_SHOOTVELO_RATIO * (db - Constants.Simulation.HUB_CONTENTS.getXWidth() / 2.0 - 6.0) + 10.0;
+        return Constants.DISTANCE_SHOOTVELO_RATIO * (db - Constants.Simulation.HUB_CONTENTS.getXWidth() / 2.0 - 6.0) + 10.0 - Constants.SPEED_OFFSET.in(MetersPerSecond);
     }
 
     public static Angle calculateShootPitch(CommandSwerveDrivetrain drivetrain)

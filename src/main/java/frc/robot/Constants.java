@@ -596,6 +596,7 @@ public class Constants
     public static final double FLYWHEEL_OFFSET_UNIT = 0.5; // TODO
 
     public static final double DISTANCE_SHOOTVELO_RATIO = 0.7400067;
+    public static final LinearVelocity SPEED_OFFSET = MetersPerSecond.of(0.275);
 
     public static final boolean INTERPOLATE_VALUES = true;
 }
