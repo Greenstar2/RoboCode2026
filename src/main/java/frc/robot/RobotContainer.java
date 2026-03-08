@@ -45,7 +45,6 @@ import frc.robot.commands.hood.AimToAngle;
 import frc.robot.commands.hood.HoodManualDown;
 import frc.robot.commands.hood.HoodManualUp;
 import frc.robot.commands.hood.ZeroHood;
-import frc.robot.commands.hood.ZeroHoodSoft;
 import frc.robot.commands.indexer.IndexerDefaultSpeed;
 import frc.robot.commands.indexer.IndexerFullSpeed;
 import frc.robot.commands.intake.DefaultIntake;
@@ -216,8 +215,8 @@ public class RobotContainer
     public void init()
     {
         // tested in sim
-        stow = ()->Commands.runOnce(()->CommandScheduler.getInstance().cancel(commands.toArray(new Command[0]))).andThen(
-            new ShooterDefaultSpeed()); // because a command instance cannot be scheduled to independent triggers
+        stow = ()->Commands.runOnce(()->CommandScheduler.getInstance().cancel(commands.toArray(new Command[0]))); 
+        // because a command instance cannot be scheduled to independent triggers
         
 
         // tested in sim
@@ -310,7 +309,6 @@ public class RobotContainer
         testCommandChooser.addOption("Hood/AimToAngle[" + Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE) + "°]", 
             new AimToAngle(Hood.mechanismToEffective(Constants.Hood.MAX_ANGLE)));
         testCommandChooser.addOption("Hood/ZeroHood", new ZeroHood());
-        testCommandChooser.addOption("Hood/ZeroHoodSoft", new ZeroHoodSoft());
         testCommandChooser.addOption("Hood/HoodManualUp", new HoodManualUp());
         testCommandChooser.addOption("Hood/HoodManualDown", new HoodManualDown());
         testCommandChooser.addOption("Indexer/IndexerDefaultSpeed", new IndexerDefaultSpeed());
@@ -362,13 +360,15 @@ public class RobotContainer
         */
         SmartDashboard.putData("Auton Chooser", autonChooser);
 
+        // ----------------------- DEFAULT BINDINGS HERE -------------------------
+
         Intake.getInstance().setDefaultCommand(new DefaultIntake());
         Indexer.getInstance().setDefaultCommand(new IndexerDefaultSpeed());
         ShooterIndexer.getInstance().setDefaultCommand(new ShooterIndexerDefaultSpeed());
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
-        // Hood.getInstance().setDefaultCommand(new ZeroHood());
+        Hood.getInstance().setDefaultCommand(new AimToAngle(75.0));
 
-        // CHANGING CONTROLS HERE!!!!
+        // -------------------- CHANGE BINDING SETTINGS HERE ---------------------
 
         boolean useDebuggingBindings = false; // mainly for sysid or debugging
         boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
@@ -610,7 +610,7 @@ public class RobotContainer
                             FlippingUtil.flipFieldPose(Constants.ZEROING_POSE) : Constants.ZEROING_POSE)))
                 .withName("ZeroDrivetrain")));
 
-        operator.back().onTrue(track(new ZeroHoodSoft()
+        operator.back().onTrue(track(new ZeroHood()
             //.alongWith(new ShooterDefaultSpeed())
             .withName("ZeroHood+Shooter")));
 
