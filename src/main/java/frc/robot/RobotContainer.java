@@ -635,7 +635,7 @@ public class RobotContainer
         }));
 
         operator.y().whileTrue(track(new HoodManualUp()));
-        operator.x().onTrue(track(new IndependentCommand(new RunIntake().withTimeout(1.5))
+        operator.x().onTrue(track(new IndependentCommand(new RunIntake())
             .andThen(Commands.runOnce(()->intakeTriggered = true))
             .andThen(new RetractIntake())
             .andThen(Commands.runOnce(()->
