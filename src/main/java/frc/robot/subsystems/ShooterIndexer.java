@@ -49,43 +49,40 @@ public class ShooterIndexer extends SubsystemBase
     {
         motor.clearStickyFaults();
 
-        var talonFXConfigs = new TalonFXConfiguration();
+        TalonFXConfiguration config = new TalonFXConfiguration();
 
-        // set slot 0 gains
-        var slot0Configs = talonFXConfigs.Slot0;
-        slot0Configs.kS = Constants.ShooterIndexer.KS;
-        slot0Configs.kV = Constants.ShooterIndexer.KV;
-        slot0Configs.kA = Constants.ShooterIndexer.KA;
-        slot0Configs.kP = Constants.ShooterIndexer.KP;
-        slot0Configs.kI = Constants.ShooterIndexer.KI;
-        slot0Configs.kD = Constants.ShooterIndexer.KD;
+        // not used currently
+        config.Slot0.kP = Constants.ShooterIndexer.KP;
+        config.Slot0.kI = Constants.ShooterIndexer.KI;
+        config.Slot0.kD = Constants.ShooterIndexer.KD;
 
-        talonFXConfigs.CurrentLimits.StatorCurrentLimit = Constants.ShooterIndexer.STATOR_CURRENT_LIMIT;
-        talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimit = Constants.ShooterIndexer.STATOR_CURRENT_LIMIT;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
         
-        talonFXConfigs.CurrentLimits.SupplyCurrentLimit = Constants.ShooterIndexer.SUPPLY_CURRENT_LIMIT;
-        talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.SupplyCurrentLimit = Constants.ShooterIndexer.SUPPLY_CURRENT_LIMIT;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXConfigs.MotorOutput.Inverted = Constants.ShooterIndexer.INVERTED;
-        talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        config.MotorOutput.Inverted = Constants.ShooterIndexer.INVERTED;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        talonFXConfigs.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
-        talonFXConfigs.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
+        config.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
+        config.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
 
-        talonFXConfigs.Feedback.SensorToMechanismRatio = Constants.ShooterIndexer.GEAR_RATIO;
+        config.Feedback.SensorToMechanismRatio = Constants.ShooterIndexer.GEAR_RATIO;
 
-
-        /* // add if necessary
-        // set Motion Magic settings
-        var motionMagicConfigs = talonFXConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = Constants.ShooterIndexer.MM_CRUISE_VELOCITY;
-        motionMagicConfigs.MotionMagicAcceleration = Constants.ShooterIndexer.MM_ACCELERATION;
-        motionMagicConfigs.MotionMagicJerk = Constants.ShooterIndexer.MM_JERK;
-        */
-
-        motor.getConfigurator().apply(talonFXConfigs);
+        motor.getConfigurator().apply(config);
     }
 
+    public AngularVelocity getVelocity() 
+    {
+        return motor.getVelocity().getValue();
+    }
+
+    public Voltage getVoltage() 
+    {
+        return motor.getMotorVoltage().getValue();
+    }
+    
     public void setVelocity(AngularVelocity velocity) 
     {
         if (isDisabled())
@@ -95,25 +92,15 @@ public class ShooterIndexer extends SubsystemBase
         }
         motor.set(velocity.in(RotationsPerSecond));
     }
-
-    public AngularVelocity getVelocity() 
-    {
-        return motor.getVelocity().getValue();
-    }
-
+    
     public void setVoltage(Voltage voltage) 
     {
+        if (isDisabled())
+        {
+            System.out.println("Quashing input to ShooterIndexer");
+            return;
+        }
         motor.setVoltage(voltage.in(Volts));
-    }
-
-    public Voltage getVoltage() 
-    {
-        return motor.getMotorVoltage().getValue();
-    }
-
-    public double getDutyCycle()
-    {
-        return motor.getDutyCycle().getValueAsDouble();
     }
     
     @Override

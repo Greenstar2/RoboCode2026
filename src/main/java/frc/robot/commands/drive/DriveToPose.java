@@ -30,7 +30,6 @@ public class DriveToPose extends Command{
 
     @Override
     public void initialize() {
-        AlignDirection direction = Robot.instance.robotContainer.getAlignDirection();
         System.out.println("Starting DriveToPoseCommand...");
         updateTargetPose();
         startPath();
@@ -88,9 +87,7 @@ public class DriveToPose extends Command{
                 return;
             }
 
-            PathPlannerPath generatedPath = new PathPlannerPath(waypoints, 
-            Constants.Vision.constraints, null, 
-            new GoalEndState(0, targetPose.getRotation()));
+            PathPlannerPath generatedPath = new PathPlannerPath(waypoints, Constants.Vision.constraints, null, new GoalEndState(0, targetPose.getRotation()));
             generatedPath.preventFlipping = true;
             pathCommand = AutoBuilder.followPath(generatedPath);
 

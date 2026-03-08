@@ -42,8 +42,6 @@ public class Constants
 {
     public static final double MAX_VOLTAGE = 12.0;
     
-    public static final double EPSILON = 0.3;
-
     public static final double ROBOT_HEIGHT = 0.89535; // y direction when bot is faced in the positive x direction; that is, parallel to the intake face
     public static final double ROBOT_WIDTH = 0.84455;
 
@@ -132,6 +130,8 @@ public class Constants
         public static final ChassisReference RIGHT_MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
 
         public static final double FLYWHEEL_CIRCUMFERANCE = Inches.of(4.0).times(Math.PI).in(Meters); // radius of 2 inches
+        
+        public static final double MAX_ERROR = 0.3;
     }
 
     public class Intake
@@ -221,6 +221,7 @@ public class Constants
 
         public static final double MIN_ANGLE = 0.0; // in motor direction - equivalent to 75 degree pitch for fuel trajectory
         public static final double MAX_ANGLE = 15.0; // equivalent to 60 degree pitch
+        public static final double MAX_ERROR = 0.25;
     
         public static final double STALLING_CURRENT = 30.0; // TODO
 
@@ -291,16 +292,13 @@ public class Constants
         public static final double KD_CLIMBWHEELS = 0.0; //TODO
         public static final double KD_SPOOLING = 0.037935; // TODO
 
-        public static final double CLIMBWHEELS_STATOR_CURRENT_LIMIT = 60.0;
+        public static final double CLIMBWHEELS_STATOR_CURRENT_LIMIT = 90.0;
         public static final double CLIMBWHEELS_SUPPLY_CURRENT_LIMIT = 40.0;
         public static final double SPOOLING_STATOR_CURRENT_LIMIT = 90.0;
         public static final double SPOOLING_SUPPLY_CURRENT_LIMIT = 40.0;
+
         public static final double SPOOLING_STALLING_CURRENT = 20;
 		
-        public static final double KS = 0.0025457; // TODO
-        public static final double KV = 0.018935; // TODO
-        public static final double KA = 0.0016851; // TODO
-		public static final double KG = 0.016529; // TODO
         public static final Angle MAX_ERROR = Rotations.of(0.1);
 
         // positive voltage on CLIMBWHEELS = driving CLIMBWHEELS up
@@ -312,13 +310,6 @@ public class Constants
         public static final Voltage UNSPOOL_VOLTAGE = Volts.of(-1.0); // TODO
 
         public static final double UNSPOOL_TIME = 2.0; // seconds
-
-        public static final double CLIMBWHEELS_MIN_HEIGHT = 0.0;
-        public static final double CLIMBWHEELS_MAX_HEIGHT = 10.0;
-
-        public static final double MM_CRUISE_VELOCITY = 6.0;
-		public static final double MM_ACCELERATION = 5.0;
-		public static final double MM_JERK = 24.0;
     }
 
     public class Indexer {
@@ -347,7 +338,7 @@ public class Constants
         public static final double MAIN_MAX_VOLTAGE = 3.5; // TODO volts
         public static final double MAIN_DEFAULT_VOLTAGE = 0.0; // TODO volts
 
-        public static final double MAIN_GEAR_RATIO = 1.0; // TODO
+        public static final double MAIN_GEAR_RATIO = 16.0/12.0; // TODO
 
         public static final ChassisReference MAIN_MECHANICAL_ORIENTATION = ChassisReference.Clockwise_Positive;
         
@@ -368,7 +359,7 @@ public class Constants
         public static final double SIDE_MAX_VOLTAGE = 3.5 * 0.75; // TODO volts
         public static final double SIDE_DEFAULT_VOLTAGE = 0.0; // TODO volts
 
-        public static final double SIDE_GEAR_RATIO = 1.0; // TODO
+        public static final double SIDE_GEAR_RATIO = 20.0/12.0; // TODO
 
         public static final ChassisReference SIDE_MECHANICAL_ORIENTATION = ChassisReference.Clockwise_Positive;
     }

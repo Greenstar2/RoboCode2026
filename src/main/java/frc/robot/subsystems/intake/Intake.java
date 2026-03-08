@@ -1,6 +1,5 @@
 package frc.robot.subsystems.intake;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -57,9 +56,6 @@ public class Intake extends SubsystemBase
         motorConfig.Slot0.kP = Constants.Intake.KP;
         motorConfig.Slot0.kI = Constants.Intake.KI;
         motorConfig.Slot0.kD = Constants.Intake.KD;
-        motorConfig.Slot0.kS = Constants.Intake.KS;
-        motorConfig.Slot0.kV = Constants.Intake.KV;
-        motorConfig.Slot0.kA = Constants.Intake.KA;
 
         motorConfig.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         motorConfig.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
@@ -106,16 +102,6 @@ public class Intake extends SubsystemBase
         }
         motor.setControl(new VelocityVoltage(velocity));
     }
-
-    public void setDutyCycle(double velocity) 
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Intake");
-            return;
-        }
-        motor.setControl(new DutyCycleOut(velocity));
-    }
     
     @Override
     public void periodic ()
@@ -149,29 +135,6 @@ public class Intake extends SubsystemBase
     {
         return Robot.instance.robotContainer.getStatus(RobotContainer.INTAKE_INDEX) == SubsystemStatus.Disabled;
     }
-     
-    /*
-    private SysIdRoutine sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(), 
-        new SysIdRoutine.Mechanism((Voltage v)->motor.setControl(new VoltageOut(v)),
-            (SysIdRoutineLog l)->l
-                .motor("Intake")
-                .voltage(getVoltage())
-                .angularPosition(motor.getPosition().getValue())
-                .angularVelocity(getVelocity()),
-        this)
-    );
-
-    public Command sysIdQuasistatic (SysIdRoutine.Direction direction)
-    {
-        return sysId.quasistatic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-    
-    public Command sysIdDynamic (SysIdRoutine.Direction direction)
-    {
-        return sysId.dynamic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-        */
 
     public static Intake getInstance()
     {

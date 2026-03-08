@@ -53,16 +53,11 @@ public class Indexer extends SubsystemBase
     private void config() {
         main.clearStickyFaults();
 
-        var mainConfigs = new TalonFXConfiguration();
+        TalonFXConfiguration mainConfigs = new TalonFXConfiguration();
 
-        // set slot 0 gains
-        var mainSlot0Configs = mainConfigs.Slot0;
-        mainSlot0Configs.kS = Constants.Indexer.MAIN_KS;
-        mainSlot0Configs.kV = Constants.Indexer.MAIN_KV;
-        mainSlot0Configs.kA = Constants.Indexer.MAIN_KA;
-        mainSlot0Configs.kP = Constants.Indexer.MAIN_KP;
-        mainSlot0Configs.kI = Constants.Indexer.MAIN_KI;
-        mainSlot0Configs.kD = Constants.Indexer.MAIN_KD;
+        mainConfigs.Slot0.kP = Constants.Indexer.MAIN_KP;
+        mainConfigs.Slot0.kI = Constants.Indexer.MAIN_KI;
+        mainConfigs.Slot0.kD = Constants.Indexer.MAIN_KD;
 
         mainConfigs.CurrentLimits.StatorCurrentLimit = Constants.Indexer.MAIN_STATOR_CURRENT_LIMIT;
         mainConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -78,29 +73,16 @@ public class Indexer extends SubsystemBase
 
         mainConfigs.Feedback.SensorToMechanismRatio = Constants.Indexer.MAIN_GEAR_RATIO;
 
-
-        /* // add if necessary
-        // set Motion Magic settings
-        var motionMagicConfigs = talonFXConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Indexer.MM_CRUISE_VELOCITY;
-        motionMagicConfigs.MotionMagicAcceleration = Constants.Indexer.MM_ACCELERATION;
-        motionMagicConfigs.MotionMagicJerk = Constants.Indexer.MM_JERK;
-        */
-
         main.getConfigurator().apply(mainConfigs);
         
         side.clearStickyFaults();
 
-        var sideConfigs = new TalonFXConfiguration();
+        TalonFXConfiguration sideConfigs = new TalonFXConfiguration();
 
-        // set slot 0 gains
-        var sideSlot0Configs = sideConfigs.Slot0;
-        sideSlot0Configs.kS = Constants.Indexer.SIDE_KS;
-        sideSlot0Configs.kV = Constants.Indexer.SIDE_KV;
-        sideSlot0Configs.kA = Constants.Indexer.SIDE_KA;
-        sideSlot0Configs.kP = Constants.Indexer.SIDE_KP;
-        sideSlot0Configs.kI = Constants.Indexer.SIDE_KI;
-        sideSlot0Configs.kD = Constants.Indexer.SIDE_KD;
+        // currently not in use
+        sideConfigs.Slot0.kP = Constants.Indexer.SIDE_KP;
+        sideConfigs.Slot0.kI = Constants.Indexer.SIDE_KI;
+        sideConfigs.Slot0.kD = Constants.Indexer.SIDE_KD;
 
         sideConfigs.CurrentLimits.StatorCurrentLimit = Constants.Indexer.SIDE_STATOR_CURRENT_LIMIT;
         sideConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -119,6 +101,7 @@ public class Indexer extends SubsystemBase
         side.getConfigurator().apply(sideConfigs);
     }
 
+    // currently not in use
     public void setMainVelocity(AngularVelocity velocity) 
     {
         if (isDisabled())
@@ -128,7 +111,6 @@ public class Indexer extends SubsystemBase
         }
         main.setControl(new VelocityVoltage(velocity));
     }
-
 
     public void setMainVoltage(Voltage voltage) 
     {
@@ -140,6 +122,7 @@ public class Indexer extends SubsystemBase
         main.setVoltage(voltage.in(Volts));
     }
     
+    // currently not in use
     public void setSideVelocity(AngularVelocity velocity) 
     {
         if (isDisabled())
@@ -149,7 +132,6 @@ public class Indexer extends SubsystemBase
         }
         side.setControl(new VelocityVoltage(velocity));
     }
-
 
     public void setSideVoltage(Voltage voltage) 
     {
@@ -170,11 +152,6 @@ public class Indexer extends SubsystemBase
     {
         return main.getMotorVoltage().getValue();
     }
-
-    public double getMainDutyCycle()
-    {
-        return main.getDutyCycle().getValueAsDouble();
-    }
     
     public AngularVelocity getSideVelocity() 
     {
@@ -186,11 +163,6 @@ public class Indexer extends SubsystemBase
         return side.getMotorVoltage().getValue();
     }
 
-    public double getSideDutyCycle()
-    {
-        return side.getDutyCycle().getValueAsDouble();
-    }
-    
     @Override
     public void periodic ()
     {
@@ -240,32 +212,6 @@ public class Indexer extends SubsystemBase
         return Robot.instance.robotContainer.getStatus(RobotContainer.INDEXER_INDEX) == SubsystemStatus.Disabled;
     }
     
-    /*
-    private SysIdRoutine sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(), 
-        new SysIdRoutine.Mechanism((Voltage v)->main.setControl(new VoltageOut(v)),
-            (SysIdRoutineLog l)->l
-                .motor("Indexer")
-                .voltage(getVoltage())
-                .angularPosition(main.getPosition().getValue())
-                .angularVelocity(getVelocity()),
-        this)
-    );
-
-    public Command sysIdQuasistatic (SysIdRoutine.Direction direction)
-    {
-        return sysId.quasistatic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-    
-    public Command sysIdDynamic (SysIdRoutine.Direction direction)
-    {
-        return sysId.dynamic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-    */
-
-    /**
-     * Singleton code
-     */
     public static Indexer getInstance() {
         if (instance == null) instance = new Indexer();
         return instance;

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.intake;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -11,7 +10,6 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -57,9 +55,6 @@ public class IntakeExtension extends SubsystemBase
         extensionConfig.Slot0.kP = Constants.IntakeExtension.KP;
         extensionConfig.Slot0.kI = Constants.IntakeExtension.KI;
         extensionConfig.Slot0.kD = Constants.IntakeExtension.KD;
-        extensionConfig.Slot0.kS = Constants.IntakeExtension.KS;
-        extensionConfig.Slot0.kV = Constants.IntakeExtension.KV;
-        extensionConfig.Slot0.kA = Constants.IntakeExtension.KA;
 
         extensionConfig.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         extensionConfig.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
@@ -80,11 +75,6 @@ public class IntakeExtension extends SubsystemBase
         return motor.getVelocity().getValue();
     }
 
-    public Angle getPosition()
-    {
-        return motor.getPosition().getValue();
-    }
-
     public Current getStatorCurrent()
     {
         return motor.getStatorCurrent().getValue();
@@ -100,6 +90,7 @@ public class IntakeExtension extends SubsystemBase
         motor.setControl(new VoltageOut(voltage));
     }
 
+    // in case we switch to using PID
     public void setVelocity (AngularVelocity velocity)
     {
         if (isDisabled())
@@ -110,21 +101,8 @@ public class IntakeExtension extends SubsystemBase
         motor.setControl(new VelocityVoltage(velocity));
     }
 
-    public void setDutyCycle(double velocity) 
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to IntakeExtension");
-            return;
-        }
-        motor.setControl(new DutyCycleOut(velocity));
-    }
-
     public boolean isStalling()
     {
-    //    if (Robot.isSimulation()) return stallSim.get();
-        //System.out.println("Stator Current: " + motor.getStatorCurrent().getValueAsDouble());
-
         if (getVoltage().in(Volts) > 0)
         {
             return motor.getStatorCurrent().getValueAsDouble() >= Constants.IntakeExtension.STALLING_CURRENT_EXTEND;
@@ -142,16 +120,11 @@ public class IntakeExtension extends SubsystemBase
         {
             TalonFXSimState simState = motor.getSimState();
 
-            // set the supply voltage of the TalonFX
             simState.setSupplyVoltage(RobotController.getBatteryVoltage());
-
-            // get the motor voltage of the TalonFX
             Voltage elevatorMotorVoltage = simState.getMotorVoltageMeasure();
 
-            // use the motor voltage to calculate new position and velocity
-            // using WPILib's DCMotorSim class for physics simulation
             sim.setInputVoltage(elevatorMotorVoltage.in(Volts));
-            sim.update(0.020); // assume 20 ms loop time
+            sim.update(0.020);
 
             // apply the new rotor position and velocity to the TalonFX;
             // note that this is rotor position/velocity (before gear ratio), but
@@ -170,29 +143,6 @@ public class IntakeExtension extends SubsystemBase
     {
         return Robot.instance.robotContainer.getStatus(RobotContainer.INTAKE_EXTENSION_INDEX) == SubsystemStatus.Disabled;
     }
-    
-    /*
-    private SysIdRoutine sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(), 
-        new SysIdRoutine.Mechanism((Voltage v)->motor.setControl(new VoltageOut(v)),
-            (SysIdRoutineLog l)->l
-                .motor("IntakeExtension")
-                .voltage(getVoltage())
-                .angularPosition(motor.getPosition().getValue())
-                .angularVelocity(getVelocity()),
-        this)
-    );
-
-    public Command sysIdQuasistatic (SysIdRoutine.Direction direction)
-    {
-        return sysId.quasistatic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-    
-    public Command sysIdDynamic (SysIdRoutine.Direction direction)
-    {
-        return sysId.dynamic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-        */
 
     public static IntakeExtension getInstance()
     {

@@ -60,26 +60,14 @@ public class Telemetry
     private DoublePublisher intakeMainCurrent = intake.getDoubleTopic("main current (A) ").publish();
 
     private StringPublisher intakeExtensionCommand = intake.getStringTopic("extension command").publish();
-    private DoublePublisher intakeExtensionPosition = intake.getDoubleTopic("extension position (rot)").publish();
     private DoublePublisher intakeExtensionVelocity = intake.getDoubleTopic("extension velocity (rot per s)").publish();
     private DoublePublisher intakeExtensionVoltage = intake.getDoubleTopic("extension voltage (V)").publish();
     private DoublePublisher intakeExtensionCurrent = intake.getDoubleTopic("current (A)").publish();
-
-    /*
-    private NetworkTable turret = table.getSubTable("Turret");
-    private StringPublisher turretCommand = turret.getStringTopic("command").publish();
-    private DoublePublisher turretPosition = turret.getDoubleTopic("position (°)").publish();
-    private DoublePublisher turretTargetPosition = turret.getDoubleTopic("target position (°)").publish();
-    private DoublePublisher turretVelocity = turret.getDoubleTopic("velocity (° per s)").publish();
-    private DoublePublisher turretVoltage = turret.getDoubleTopic("voltage (V)").publish();
-    private BooleanPublisher turretReadyToShoot = turret.getBooleanTopic("ready to shoot?").publish();
-    */
 
     private NetworkTable hood = table.getSubTable("Hood");
     private StringPublisher hoodCommand = hood.getStringTopic("command").publish();
     private DoublePublisher hoodPosition = hood.getDoubleTopic("position (°)").publish();
     private DoublePublisher hoodTargetPosition = hood.getDoubleTopic("target position (°)").publish();
-    private DoublePublisher hoodVelocity = hood.getDoubleTopic("velocity (° per s)").publish();
     private DoublePublisher hoodVoltage = hood.getDoubleTopic("voltage (V)").publish();
     private BooleanPublisher hoodReadyToShoot = hood.getBooleanTopic("ready to shoot?").publish();
     private DoublePublisher hoodStatorCurrent = hood.getDoubleTopic("stator current (A)").publish();
@@ -203,26 +191,14 @@ public class Telemetry
         
         Command intakeExtensionCommand = IntakeExtension.getInstance().getCurrentCommand();
         this.intakeExtensionCommand.set(intakeExtensionCommand == null ? "" : intakeExtensionCommand.getName());
-        intakeExtensionPosition.set(IntakeExtension.getInstance().getPosition().in(Rotations));
         intakeExtensionVelocity.set(IntakeExtension.getInstance().getVelocity().in(RotationsPerSecond));
         intakeExtensionVoltage.set(IntakeExtension.getInstance().getVoltage().in(Volts));
         intakeExtensionCurrent.set(IntakeExtension.getInstance().getStatorCurrent().in(Amps));
 
-        /*
-        Command turretCommand = Turret.getInstance().getCurrentCommand();
-        this.turretCommand.set(turretCommand == null ? "" : turretCommand.getName());
-        turretPosition.set(Turret.getInstance().getPosition().in(Degrees));
-        turretTargetPosition.set(Turret.getInstance().getDesiredPosition().in(Degrees));
-        turretVelocity.set(Turret.getInstance().getVelocity().in(DegreesPerSecond));
-        turretVoltage.set(Turret.getInstance().getVoltage().in(Volts));
-        turretReadyToShoot.set(Turret.getInstance().readyToShoot());
-        */
-        
         Command hoodCommand = Hood.getInstance().getCurrentCommand();
         this.hoodCommand.set(hoodCommand == null ? "" : hoodCommand.getName());
         hoodPosition.set(Hood.getInstance().getPosition().in(Degrees));
         hoodTargetPosition.set(Hood.getInstance().getDesiredPosition().in(Degrees));
-        hoodVelocity.set(Hood.getInstance().getVelocity().in(DegreesPerSecond));
         hoodVoltage.set(Hood.getInstance().getVoltage().in(Volts));
         hoodReadyToShoot.set(Hood.getInstance().readyToShoot());
         hoodStatorCurrent.set(Hood.getInstance().getStatorCurrent());

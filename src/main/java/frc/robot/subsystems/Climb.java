@@ -1,17 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -24,21 +20,18 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 
 public class Climb extends SubsystemBase 
 {
     private static Climb instance;
 
-    private Angle targetPosition;
-
     private TalonFX climbWheels;
     private TalonFX spooling;
 
-    private ElevatorSim elevatorSim = new ElevatorSim(
-        LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, Constants.Climb.CLIMBWHEELS_GEAR_RATIO),
-            DCMotor.getKrakenX60(1), Constants.Climb.CLIMBWHEELS_MIN_HEIGHT, Constants.Climb.CLIMBWHEELS_MAX_HEIGHT, true, Constants.Climb.CLIMBWHEELS_MIN_HEIGHT);
+    // this doesn't work anymore since its not an elevator and idk how you would sim it
+    // private ElevatorSim elevatorSim = new ElevatorSim(
+    //     LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, Constants.Climb.CLIMBWHEELS_GEAR_RATIO),
+    //         DCMotor.getKrakenX60(1), Constants.Climb.CLIMBWHEELS_MIN_HEIGHT, Constants.Climb.CLIMBWHEELS_MAX_HEIGHT, true, Constants.Climb.CLIMBWHEELS_MIN_HEIGHT);
 
 
     private DCMotorSim climbSim = new DCMotorSim(
@@ -47,9 +40,8 @@ public class Climb extends SubsystemBase
 
     private Climb() 
     {
-        targetPosition = Rotations.of(0);
-        climbWheels = new TalonFX(Constants.Climb.CLIMBWHEELS_ID, Constants.CAN_CHAIN);
-        spooling = new TalonFX(Constants.Climb.SPOOLING_ID, Constants.CAN_CHAIN);
+        climbWheels = new TalonFX(Constants.Climb.CLIMBWHEELS_ID, Constants.CAN_SUPERSTRUCTURE);
+        spooling = new TalonFX(Constants.Climb.SPOOLING_ID, Constants.CAN_SUPERSTRUCTURE);
 
         config();
         
@@ -65,10 +57,8 @@ public class Climb extends SubsystemBase
         }
     }
 
-    //configurates the subsystem
     private void config() 
     {
-
         climbWheels.clearStickyFaults();
         spooling.clearStickyFaults();
 
@@ -87,17 +77,8 @@ public class Climb extends SubsystemBase
         climbWheelsConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         climbWheelsConfig.Slot0.kP = Constants.Climb.KP_CLIMBWHEELS;
-        climbWheelsConfig.Slot0.kI = Constants.Climb.KP_CLIMBWHEELS;
-        climbWheelsConfig.Slot0.kD = Constants.Climb.KP_CLIMBWHEELS;
-
-        climbWheelsConfig.Slot0.kG = Constants.Climb.KG;
-        climbWheelsConfig.Slot0.kS = Constants.Climb.KS;
-        climbWheelsConfig.Slot0.kV = Constants.Climb.KV;
-        climbWheelsConfig.Slot0.kA = Constants.Climb.KA;
-
-        climbWheelsConfig.MotionMagic.MotionMagicCruiseVelocity = Constants.Climb.MM_CRUISE_VELOCITY;
-        climbWheelsConfig.MotionMagic.MotionMagicAcceleration = Constants.Climb.MM_ACCELERATION;
-        climbWheelsConfig.MotionMagic.MotionMagicJerk = Constants.Climb.MM_JERK;
+        climbWheelsConfig.Slot0.kI = Constants.Climb.KI_CLIMBWHEELS;
+        climbWheelsConfig.Slot0.kD = Constants.Climb.KD_CLIMBWHEELS;
 
         climbWheels.getConfigurator().apply(climbWheelsConfig);
 
@@ -122,16 +103,6 @@ public class Climb extends SubsystemBase
         spooling.getConfigurator().apply(spoolingConfig);
     }
 
-    public void setClimbWheelsDutyCycle(double velocity) 
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Climb");
-            return;
-        }
-        climbWheels.setControl(new DutyCycleOut(velocity));
-    }
-
     public void setClimbWheelsVelocity(AngularVelocity velocity) 
     {
         if (isDisabled())
@@ -145,16 +116,6 @@ public class Climb extends SubsystemBase
     public AngularVelocity getClimbWheelsVelocity() 
     {
         return climbWheels.getVelocity().getValue();
-    }
-
-    public Angle getClimbWheelsPosition()
-    {
-        return climbWheels.getPosition().getValue();
-    }
-
-    public Angle getClimbWheelsTargetPosition() 
-    {
-        return targetPosition;
     }
 
     public Voltage getClimbWheelsVoltage()
@@ -172,27 +133,9 @@ public class Climb extends SubsystemBase
         climbWheels.setControl(new VoltageOut(v));
     }
 
-    public void setClimbWheelsTargetPosition(Angle tPosition) 
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Climb");
-            return;
-        }
-
-        targetPosition = tPosition;
-        //System.out.println("Aiming to " + tPosition.in(Rotations) + ".");
-        climbWheels.setControl(new MotionMagicVoltage(tPosition));
-    }
-
     public boolean isSpoolingStalling()
     {
         return Math.abs(spooling.getStatorCurrent().getValueAsDouble()) >= Constants.Climb.SPOOLING_STALLING_CURRENT;
-    }
-
-    public void setSpoolingDutyCycle(double velocity) 
-    {
-        spooling.setControl(new DutyCycleOut(velocity));
     }
 
     public Voltage getSpoolingVoltage()
@@ -210,31 +153,30 @@ public class Climb extends SubsystemBase
         spooling.setControl(new VoltageOut(v));
     }
     
-    
     @Override
     public void periodic()
     {
         if (isSimulated())
         {
-            TalonFXSimState climbWheelsSimState = climbWheels.getSimState();
+            // TalonFXSimState climbWheelsSimState = climbWheels.getSimState();
 
             // set the supply voltage of the TalonFX
-            climbWheelsSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            // climbWheelsSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
 
             // get the motor voltage of the TalonFX
-            Voltage climbWheelsMotorVoltage = climbWheelsSimState.getMotorVoltageMeasure();
+            // Voltage climbWheelsMotorVoltage = climbWheelsSimState.getMotorVoltageMeasure();
 
             // use the motor voltage to calculate new position and velocity
             // using WPILib's DCMotorSim class for physics simulation
-            elevatorSim.setInputVoltage(climbWheelsMotorVoltage.in(Volts));
-            elevatorSim.update(0.020); // assume 20 ms loop time
+            // elevatorSim.setInputVoltage(climbWheelsMotorVoltage.in(Volts));
+            // elevatorSim.update(0.020); // assume 20 ms loop time
 
             // apply the new rotor position and velocity to the TalonFX;
             // note that this is rotor position/velocity (before gear ratio), but
             // DCMotorSim returns mechanism position/velocity (after gear ratio)
-            climbWheelsSimState.setRawRotorPosition(elevatorSim.getPositionMeters() * Constants.Climb.CLIMBWHEELS_GEAR_RATIO);
-            climbWheelsSimState
-                    .setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() * Constants.Climb.CLIMBWHEELS_GEAR_RATIO);
+            // climbWheelsSimState.setRawRotorPosition(elevatorSim.getPositionMeters() * Constants.Climb.CLIMBWHEELS_GEAR_RATIO);
+            // climbWheelsSimState
+            //         .setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() * Constants.Climb.CLIMBWHEELS_GEAR_RATIO);
 
             TalonFXSimState climbSimState = spooling.getSimState();
 
@@ -267,27 +209,6 @@ public class Climb extends SubsystemBase
     private boolean isDisabled ()
     {
         return Robot.instance.robotContainer.getStatus(RobotContainer.CLIMB_INDEX) == SubsystemStatus.Disabled;
-    }
-    
-    private SysIdRoutine sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.per(Second).of(0.1),Volts.of(0.5),Seconds.of(10.0)), 
-        new SysIdRoutine.Mechanism((Voltage v)->setClimbWheelsVoltage(v),
-            (SysIdRoutineLog l)->l
-                .motor("Climb")
-                .voltage(getClimbWheelsVoltage())
-                .angularPosition(climbWheels.getPosition().getValue())
-                .angularVelocity(getClimbWheelsVelocity()),
-        this)
-    );
-
-    public Command sysIdQuasistatic (SysIdRoutine.Direction direction)
-    {
-        return sysId.quasistatic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
-    }
-    
-    public Command sysIdDynamic (SysIdRoutine.Direction direction)
-    {
-        return sysId.dynamic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
     }
     
     //returns the instance of the subsystem

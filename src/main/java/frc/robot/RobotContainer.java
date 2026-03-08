@@ -102,9 +102,7 @@ public class RobotContainer
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-
+    
     public final CommandXboxController driver = new CommandXboxController(0);
     public final CommandXboxController operator = new CommandXboxController(1);
 
@@ -230,11 +228,10 @@ public class RobotContainer
             // .alongWith(new AimToAngle(75.0))
             // .alongWith(new IndependentCommand(new ShooterTargetSpeed(()->8.0 + leftFlywheelOffset, ()->8.0 + rightFlywheelOffset)))
             .andThen(new WaitUntilCommand(
-                ()->
-                // Shooter.getInstance().readyToShoot(Util.calculateShootVelocity(drivetrain))
-                //  && 
+                ()->Shooter.getInstance().readyToShoot() // we will see if this works lol
+                 && 
                  Hood.getInstance().readyToShoot()
-                ))
+                 ))
             .andThen(new IndependentCommand(track(new IndexerFullSpeed())))
             .andThen(track(new ShooterIndexerFullSpeed())) // load to shoot
             .finallyDo(()->{
@@ -253,7 +250,7 @@ public class RobotContainer
                 ()->Util.calculatePassVelocity(drivetrain) + leftFlywheelOffset,
                 ()->Util.calculatePassVelocity(drivetrain) + rightFlywheelOffset))))
             .andThen(new WaitUntilCommand(
-                    () -> Shooter.getInstance().readyToShoot(Util.calculatePassVelocity(drivetrain))
+                    () -> Shooter.getInstance().readyToShoot()
                             && Hood.getInstance().readyToShoot()))
             .andThen(new ShooterIndexerFullSpeed()) // load to pass
             .andThen(shooterCommandFakeSubsystem.runOnce(()->{}))

@@ -49,7 +49,7 @@ public class Util
 
     private static InverseInterpolator<Double> inverseInterpolator = InverseInterpolator.forDouble();
     
-    // angles are effective
+    // angles, speeds are effective
     private static InterpolatingTreeMap<Double, Pair<LinearVelocity, Angle>> interpolatingTreeMap = new InterpolatingTreeMap<>(inverseInterpolator, interpolator);
 
     private static void addData(double distanceMeters, double velocityMetersPerSecond, double angleDegrees)

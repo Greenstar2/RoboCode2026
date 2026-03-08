@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.simulation.LimelightSimulation;
 import frc.robot.simulation.SimulationState;
 import frc.robot.util.Util;
 
@@ -47,11 +45,6 @@ public class Robot extends TimedRobot
    {
       robotContainer.init();
       Util.init();
-      if (Utils.isSimulation()) 
-      {
-         //limelightSim = new LimelightSimulation(
-         //Constants.Vision.kCamera1Name, Constants.Vision.kRobotToCam1);
-      }
 
       LimelightHelpers.setCameraPose_RobotSpace(Constants.Vision.kCamera1Name, 
       Constants.Vision.kRobotToCam1.getX(), Constants.Vision.kRobotToCam1.getY(), Constants.Vision.kRobotToCam1.getZ(),
@@ -72,8 +65,6 @@ public class Robot extends TimedRobot
       CommandScheduler.getInstance().schedule(robotContainer.testCommandChooser.getSelected());
 
       Telemetry.getInstance().update();
-
-      //limelightSim.update(robotContainer.drivetrain.getState().Pose);
    }
 
    @Override

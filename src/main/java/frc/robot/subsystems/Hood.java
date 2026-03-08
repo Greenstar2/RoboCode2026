@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -28,39 +26,17 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.RobotContainer.SubsystemStatus;
 
-/**
- * 
- */
 public class Hood extends SubsystemBase
 {
     private static Hood instance;
 
     private static TalonFX motor;
 
-    private double desiredPosition; // rotations
+    private double desiredPosition; // degrees
     
     private final DCMotorSim sim = new DCMotorSim(
         LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.001, Constants.Hood.GEAR_RATIO),
         DCMotor.getKrakenX44(1));
-
-        /*
-    private final SingleJointedArmSim motorSimModel = new SingleJointedArmSim(
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                    DCMotor.getKrakenX44Foc(1), 0.001, Constants.Hood.GEAR_RATIO),
-            DCMotor.getKrakenX44Foc(1)).getGearbox(),
-        Constants.Hood.GEAR_RATIO,
-        Constants.Hood.MOMENT_OF_INERTIA,
-        Constants.Hood.LENGTH,
-        Units.degreesToRadians(Constants.Hood.MIN_ANGLE),
-        Units.degreesToRadians(Constants.Hood.MAX_ANGLE),
-        false,
-        Units.degreesToRadians(10.0)
-        // no std devs -> no noise simulated
-        );
-        */
-
-
 
     private Hood()
     {
@@ -92,10 +68,6 @@ public class Hood extends SubsystemBase
 
         config.Feedback.SensorToMechanismRatio = Constants.Hood.GEAR_RATIO;
 
-        config.MotionMagic.MotionMagicCruiseVelocity = Constants.Hood.MM_CRUISE_VELOCITY;
-        config.MotionMagic.MotionMagicAcceleration = Constants.Hood.MM_ACCELERATION;
-        config.MotionMagic.MotionMagicJerk = Constants.Hood.MM_JERK;
-
         config.MotorOutput.Inverted = Constants.Hood.INVERTED;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
@@ -107,8 +79,6 @@ public class Hood extends SubsystemBase
         config.Slot0.kV = Constants.Hood.KV;
         config.Slot0.kA = Constants.Hood.KA;
         config.Slot0.kG = Constants.Hood.KG;
-
-        //config.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
 
         config.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         config.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
@@ -136,11 +106,6 @@ public class Hood extends SubsystemBase
     {
         return motor.getMotorVoltage().getValue();
     }
-    
-    public AngularVelocity getVelocity()
-    {
-        return motor.getVelocity().getValue();
-    }
 
     public void setPosition(Angle position)
     {
@@ -150,26 +115,6 @@ public class Hood extends SubsystemBase
             return;
         }
         motor.setPosition(position, 0.5);
-    }
-
-    public void setVelocity(AngularVelocity velocity)
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Hood");
-            return;
-        }
-        motor.setControl(new VelocityVoltage(velocity));
-    }
-
-    public void setDutyCycle(double dutyCycle)
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to Hood");
-            return;
-        }
-        motor.setControl(new DutyCycleOut(dutyCycle));
     }
 
     public void setVoltage(Voltage voltage)
@@ -185,7 +130,7 @@ public class Hood extends SubsystemBase
     
     public boolean readyToShoot ()
     {
-        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < Degrees.of(0.25).in(Rotations);
+        return Math.abs(motor.getPosition().getValue().in(Rotations) - desiredPosition) < Degrees.of(Constants.Hood.MAX_ERROR).in(Rotations);
     }
     
     public Angle getDesiredPosition()
@@ -202,8 +147,6 @@ public class Hood extends SubsystemBase
     {
         return motor.getStatorCurrent().getValueAsDouble();
     }
-
-    public long lastTime = System.currentTimeMillis();
 
     @Override
     public void periodic()
@@ -245,7 +188,7 @@ public class Hood extends SubsystemBase
                 .motor("Hood")
                 .voltage(getVoltage())
                 .angularPosition(getPosition())
-                .angularVelocity(getVelocity()),
+                .angularVelocity(motor.getVelocity().getValue()),
         this)
     );
 
@@ -259,7 +202,6 @@ public class Hood extends SubsystemBase
         return sysId.dynamic(direction).withName("SysId D" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
     }
     
-
     public static Hood getInstance()
     {
         if (instance == null) instance = new Hood();

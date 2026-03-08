@@ -36,6 +36,6 @@ public class SpoolUntilStall extends Command
     @Override
     public void end(boolean interrupted)
     {
-        Climb.getInstance().setSpoolingVoltage((Volts.of(0.0)));
+        Climb.getInstance().setSpoolingVoltage(Volts.of(0.0));
     }
 }

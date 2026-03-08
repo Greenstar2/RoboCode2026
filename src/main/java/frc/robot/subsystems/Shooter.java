@@ -83,12 +83,7 @@ public class Shooter extends SubsystemBase
 
         config.Feedback.SensorToMechanismRatio = Constants.Shooter.GEAR_RATIO;
 
-        config.MotionMagic.MotionMagicCruiseVelocity = Constants.Shooter.MM_CRUISE_VELOCITY;
-        config.MotionMagic.MotionMagicAcceleration = Constants.Shooter.MM_ACCELERATION;
-        config.MotionMagic.MotionMagicJerk = Constants.Shooter.MM_JERK;
-
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-
 
         config.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         config.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
@@ -290,12 +285,6 @@ public class Shooter extends SubsystemBase
                Math.abs(right.getVelocity().getValue().in(Rotations.per(Second)) - rightTargetVelocity) < 0.5;
     }
     
-    public boolean readyToShoot(double targetVelocity)
-    {
-        return Math.abs(left.getVelocity().getValue().in(Rotations.per(Second)) - targetVelocity) < Constants.EPSILON &&
-               Math.abs(right.getVelocity().getValue().in(Rotations.per(Second)) - targetVelocity) < Constants.EPSILON;
-    }
-
     public Command leftSysIdQuasistatic (SysIdRoutine.Direction direction)
     {
         return leftSysId.quasistatic(direction).withName("SysId Q" + (direction == SysIdRoutine.Direction.kForward ? "F" : "R"));
