@@ -3,7 +3,6 @@ package frc.robot.commands.intake;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.intake.Intake;
 
 /**

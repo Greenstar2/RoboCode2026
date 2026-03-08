@@ -1,7 +1,6 @@
 package frc.robot.commands.shooter;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import java.util.function.DoubleSupplier;
 

@@ -2,25 +2,21 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.*;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 
 
@@ -31,8 +27,6 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.RobotContainer.SubsystemStatus;
-import frc.robot.simulation.StallSimulator;
-import frc.robot.util.Util;
 
 /**
  * 

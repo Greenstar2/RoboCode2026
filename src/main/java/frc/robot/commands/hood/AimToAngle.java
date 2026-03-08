@@ -5,9 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.Hood;
-import frc.robot.util.Util;
 
 public class AimToAngle extends Command
 {

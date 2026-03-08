@@ -1,7 +1,6 @@
 package frc.robot.commands.shooter;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 
 import edu.wpi.first.wpilibj2.command.Command;

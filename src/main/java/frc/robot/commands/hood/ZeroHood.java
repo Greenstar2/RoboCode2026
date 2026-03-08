@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.Hood;
-import frc.robot.Constants;
 
 public class ZeroHood extends Command
 {
