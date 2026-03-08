@@ -96,8 +96,8 @@ public class Constants
         public static final int LEFT_ID = 21;
         public static final int RIGHT_ID = 19;
         
-        public static final double STATOR_CURRENT_LIMIT = 90.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 90.0;
+        public static final double STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double MM_CRUISE_VELOCITY = 60.0;
 		public static final double MM_ACCELERATION = 60.0;
@@ -105,7 +105,7 @@ public class Constants
 		public static final InvertedValue LEFT_INVERTED = InvertedValue.Clockwise_Positive;
 		public static final InvertedValue RIGHT_INVERTED = InvertedValue.CounterClockwise_Positive;
         
-        public static final double GEAR_RATIO = 0.6; // TODO
+        public static final double GEAR_RATIO = 20.0/12.0; // TODO
 
 		public static final double LEFT_KP = 0.015; // TODO
 		public static final double LEFT_KI = 0.0; // TODO
@@ -131,15 +131,15 @@ public class Constants
         public static final ChassisReference LEFT_MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
         public static final ChassisReference RIGHT_MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
 
-        public static final double FLYWHEEL_CIRCUMFERANCE = Inches.of(2.0).times(Math.PI).in(Meters);
+        public static final double FLYWHEEL_CIRCUMFERANCE = Inches.of(4.0).times(Math.PI).in(Meters); // radius of 2 inches
     }
 
     public class Intake
     {
         public static int ID = 23;
 
-        public static final double STATOR_CURRENT_LIMIT = 90.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 90.0;
+        public static final double STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double INTAKE_VELOCITY = 20.0; // rot/s
         public static final double DEFAULT_INTAKE_VELOCITY = 0.0;
@@ -155,7 +155,7 @@ public class Constants
         public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
 
         
-        public static final double GEAR_RATIO = 8.0/9.0;
+        public static final double GEAR_RATIO = 20.0/12.0;
         
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
     }
@@ -164,8 +164,8 @@ public class Constants
     {
         public static int ID = 24;
 
-        public static final double STATOR_CURRENT_LIMIT = 90.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 90.0;
+        public static final double STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double EXTENDING_VOLTAGE = 2.5;
         public static final double RETRACTING_VOLTAGE = -2.5;
@@ -194,8 +194,8 @@ public class Constants
     {
         public static final int ID = 26;
         
-        public static final double STATOR_CURRENT_LIMIT = 90.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 90.0;
+        public static final double STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double MM_CRUISE_VELOCITY = 2.0; // TODO
 		public static final double MM_ACCELERATION = 8.0;  // TODO
@@ -228,37 +228,6 @@ public class Constants
         public static final double MANUAL_DOWN_VOLTAGE = -0.5; // TODO
         public static final double ZEROING_VOLTAGE = -1.0; // TODO
     }
-
-    /*
-    public class Turret // this can be ignored for the present
-    {
-        public static final double ERROR_THRESHOLD = 1.0; // TODO degrees
-
-        public static final int MOTOR_ID = 28; // TODO
-
-        public static final double STATOR_CURRENT_LIMIT = 90.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 90.0;
-
-        public static final double MM_CRUISE_VELOCITY = 60.0;
-		public static final double MM_ACCELERATION = 60.0;
-		public static final double MM_JERK = 240.0;
-		public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
-        
-        public static final double GEAR_RATIO = 1.0; // TODO
-
-		public static final double KP = 1.0; // TODO
-		public static final double KI = 0.1; // TODO
-		public static final double KD = 0.0; // TODO
-		
-        public static final double KV = 0.0; // TODO
-		public static final double KG = 0.0; // TODO
-
-        public static final double FORWARD_SOFTWARE_LIMIT_THRESHOLD = 4.82; // TODO
-		public static final double REVERSE_SOFTWARE_LIMIT_THRESHOLD = -0.01; // TODO
-        
-        public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
-    }
-        */
 
     public class Simulation
     {
@@ -300,6 +269,7 @@ public class Constants
 
         public static final double HUB_INTAKE_HEIGHT = 1.8288;
     }
+
     public static final class Climb 
     {
         public static final int CLIMBWHEELS_ID = 29;
@@ -321,9 +291,9 @@ public class Constants
         public static final double KD_CLIMBWHEELS = 0.0; //TODO
         public static final double KD_SPOOLING = 0.037935; // TODO
 
-        public static final Current STATOR_CURRENT_LIMIT = Amps.of(100); // TODO
-        public static final Current SPOOLING_STALLING_CURRENT = Amps.of(60); // TODO
-        public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(100); // TODO
+        public static final Current STATOR_CURRENT_LIMIT = Amps.of(60); // TODO
+        public static final Current SPOOLING_STALLING_CURRENT = Amps.of(30); // TODO
+        public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(60); // TODO
 		
         public static final double KS = 0.0025457; // TODO
         public static final double KV = 0.018935; // TODO
@@ -354,8 +324,8 @@ public class Constants
         public static final int MAIN_ID = 31;
 
         public static final InvertedValue MAIN_INVERTED = InvertedValue.CounterClockwise_Positive;
-        public static final double MAIN_STATOR_CURRENT_LIMIT = 80.0;
-        public static final double MAIN_SUPPLY_CURRENT_LIMIT = 80.0;
+        public static final double MAIN_STATOR_CURRENT_LIMIT = 60.0;
+        public static final double MAIN_SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double MAIN_KS = 0.0048438; //TODO
         public static final double MAIN_KV = 0.12361; //TODO
@@ -382,8 +352,8 @@ public class Constants
         public static final int SIDE_ID = 25; // TODO
 
         public static final InvertedValue SIDE_INVERTED = InvertedValue.Clockwise_Positive;
-        public static final double SIDE_STATOR_CURRENT_LIMIT = 80.0;
-        public static final double SIDE_SUPPLY_CURRENT_LIMIT = 80.0;
+        public static final double SIDE_STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SIDE_SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double SIDE_KS = 0.0048438; //TODO
         public static final double SIDE_KV = 0.12361; //TODO
@@ -406,8 +376,8 @@ public class Constants
         public static final int ID = 32;
 
         public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
-        public static final double STATOR_CURRENT_LIMIT = 80.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 80.0;
+        public static final double STATOR_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double DEFAULT_VOLTAGE = 0.0;
         public static final double INTAKE_VOLTAGE = 6.0; // TODO
