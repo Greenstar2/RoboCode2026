@@ -148,6 +148,7 @@ public class Constants
         public static final double KP = 7.0;
 		public static final double KI = 0.0;
 		public static final double KD = 0.0;
+        public static final double KF = 1.0;
 		
         public static final double KS = 0.0;//0.0017035;
         public static final double KV = 0.0;//0.12364;
@@ -155,9 +156,10 @@ public class Constants
         public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
 
         
-        public static final double GEAR_RATIO = 20.0/12.0;
+        public static final double GEAR_RATIO = 4.0/3.0;
         
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
+
     }
 
     public class IntakeExtension
@@ -169,6 +171,9 @@ public class Constants
 
         public static final double EXTENDING_VOLTAGE = 2.5;
         public static final double RETRACTING_VOLTAGE = -2.5;
+        public static final double AGITATE_MIN_VOLTAGE = -1.0; // TODO
+        public static final double AGITATE_MAX_VOLTAGE = 1.0; // TODO
+        public static final double AGITATE_PERIOD_SECONDS = 1.0; // TODO
 
         public static final double KP = 0.0023821;
 		public static final double KI = 0.0;
@@ -188,6 +193,8 @@ public class Constants
 
         public static final double MIN_HEIGHT = 0.0; // TODO
         public static final double MAX_HEIGHT = 1.0; // TODO
+        
+        public static final double STALLING_DEBOUNCE_TIME = 0.1;
     }
 
     public class Hood
