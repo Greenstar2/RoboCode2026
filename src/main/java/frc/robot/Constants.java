@@ -141,7 +141,7 @@ public class Constants
         public static final double STATOR_CURRENT_LIMIT = 60.0;
         public static final double SUPPLY_CURRENT_LIMIT = 40.0;
 
-        public static final double INTAKE_VELOCITY = 20.0; // rot/s
+        public static final double INTAKE_VELOCITY = 30.0; // rot/s
         public static final double DEFAULT_INTAKE_VELOCITY = 0.0;
         public static final double EJECT_VELOCITY = -25.0; // rot/s
 
@@ -150,13 +150,13 @@ public class Constants
 		public static final double KD = 0.0;
         public static final double KF = 1.0;
 		
-        public static final double KS = 0.0;//0.0017035;
-        public static final double KV = 0.0;//0.12364;
-        public static final double KA = 0.0;//0.0078492;
+        public static final double KS = 0.0;
+        public static final double KV = 12.0/90.0; // max voltage/max speed = 12/(120/1.33)
+        public static final double KA = 0.0;
         public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
 
         
-        public static final double GEAR_RATIO = 4.0/3.0;
+        public static final double GEAR_RATIO = 16.0/12.0;
         
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
 
@@ -171,17 +171,9 @@ public class Constants
 
         public static final double EXTENDING_VOLTAGE = 2.5;
         public static final double RETRACTING_VOLTAGE = -2.5;
-        public static final double AGITATE_MIN_VOLTAGE = -1.0; // TODO
-        public static final double AGITATE_MAX_VOLTAGE = 1.0; // TODO
-        public static final double AGITATE_PERIOD_SECONDS = 1.0; // TODO
+        public static final double HOLDING_EXTEND_VOLTAGE = 0.25;
+        public static final double HOLDING_RETRACT_VOLTAGE = -0.25;
 
-        public static final double KP = 0.0023821;
-		public static final double KI = 0.0;
-		public static final double KD = 0.0;
-		
-        public static final double KS = 0.0017035;
-        public static final double KV = 0.12364;
-        public static final double KA = 0.0078492;
         public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         
         public static final double GEAR_RATIO = 6.25;

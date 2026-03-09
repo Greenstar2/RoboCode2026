@@ -57,6 +57,8 @@ public class Intake extends SubsystemBase
         motorConfig.Slot0.kI = Constants.Intake.KI;
         motorConfig.Slot0.kD = Constants.Intake.KD;
 
+        motorConfig.Slot0.kV = Constants.Intake.KV;
+
         motorConfig.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         motorConfig.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
 
