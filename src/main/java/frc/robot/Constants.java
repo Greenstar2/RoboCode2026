@@ -97,30 +97,26 @@ public class Constants
         public static final double STATOR_CURRENT_LIMIT = 60.0;
         public static final double SUPPLY_CURRENT_LIMIT = 40.0;
 
-        public static final double MM_CRUISE_VELOCITY = 60.0;
-		public static final double MM_ACCELERATION = 60.0;
-		public static final double MM_JERK = 240.0;
 		public static final InvertedValue LEFT_INVERTED = InvertedValue.Clockwise_Positive;
 		public static final InvertedValue RIGHT_INVERTED = InvertedValue.CounterClockwise_Positive;
         
         public static final double GEAR_RATIO = 20.0/12.0; // TODO
 
-		public static final double LEFT_KP = 0.015; // TODO
-		public static final double LEFT_KI = 0.0; // TODO
-		public static final double LEFT_KD = 0.0054; // TODO
-        public static final double LEFT_KS = 0.21795; // TODO
-        public static final double LEFT_KV = 0.11737; // TODO
-        public static final double LEFT_KA = 0.0055121; // TODO
+		public static final double LEFT_KP = 1.0; // TODO
+		public static final double LEFT_KI = 0.0;
+		public static final double LEFT_KD = 0.0054;
+        public static final double LEFT_KS = 0.21795;
+        public static final double LEFT_KV = 0.11737;
+        public static final double LEFT_KA = 0.0055121;
 		
-        public static final double RIGHT_KP = 0.015; // TODO
-		public static final double RIGHT_KI = 0.0; // TODO
-		public static final double RIGHT_KD = 0.0054; // TODO
-        public static final double RIGHT_KS = 0.13518; // TODO
-        public static final double RIGHT_KV = 0.1154; // TODO
-        public static final double RIGHT_KA = 0.0057192; // TODO
+        public static final double RIGHT_KP = 1.0; // TODO
+		public static final double RIGHT_KI = 0.0;
+		public static final double RIGHT_KD = 0.0054;
+        public static final double RIGHT_KS = 0.13518;
+        public static final double RIGHT_KV = 0.1154;
+        public static final double RIGHT_KA = 0.0057192;
 
         public static final double DEFAULT_VELOCITY = 0.0; // TODO meters per second (nonzero to decrease startup time)
-        public static final double SHOOT_VELOCITY = 5.0; // TODO meters per second 
         public static final double SOFT_PASS_VELOCITY = 5.0; // TODO meters per second
 
         public static final double INCREASE_VELOCITY = 0.5; // TODO
@@ -363,17 +359,19 @@ public class Constants
         public static final double SUPPLY_CURRENT_LIMIT = 60.0;
 
         public static final double DEFAULT_VOLTAGE = 0.0;
-        public static final double INTAKE_VOLTAGE = 6.0; // TODO
-        
-        public static final double KS = 0.0048438; // TODO
-        public static final double KV = 0.12361; // TODO
-        public static final double KA = 0.0089587; // TODO
-        
-        public static final double KP = 0.093687; // TODO
-        public static final double KI = 0.0; // TODO
-        public static final double KD = 0.0; // TODO
+        public static final double INTAKE_VOLTAGE = 6.0;
 
-        public static final double GEAR_RATIO = 1.0; // TODO
+        public static final double INTAKE_VELOCITY = 30.0; // rot/s
+        
+        public static final double KS = 0;
+        public static final double KV = 0.36;
+        public static final double KA = 0;
+        
+        public static final double KP = 3.0;
+        public static final double KI = 0.0;
+        public static final double KD = 0.0;
+
+        public static final double GEAR_RATIO = 3.0;
 
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
     }
