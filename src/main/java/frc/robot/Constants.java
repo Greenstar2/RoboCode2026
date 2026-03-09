@@ -190,7 +190,7 @@ public class Constants
 
 		public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
         
-        public static final double GEAR_RATIO = 137.67; // sensor to hood angle
+        public static final double GEAR_RATIO = 136.67; // sensor to hood angle
 
 		public static final double KP = 350.0; // TODO
 		public static final double KI = 50.0; // TODO
@@ -205,7 +205,7 @@ public class Constants
 
         public static final double MAX_ERROR = 0.25;
     
-        public static final double STALLING_CURRENT = 30.0; // TODO
+        public static final double STALLING_CURRENT = 10.0; // TODO
 
         public static final double MANUAL_UP_VOLTAGE = -0.5; // TODO
         public static final double MANUAL_DOWN_VOLTAGE = 0.5; // TODO

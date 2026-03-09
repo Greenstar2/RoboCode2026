@@ -3,12 +3,15 @@ package frc.robot.commands.hood;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Hood;
 
 public class ZeroHood extends Command
 {
+    Timer timer = new Timer();
+
     public ZeroHood()
     {
         addRequirements(Hood.getInstance());
@@ -17,13 +20,14 @@ public class ZeroHood extends Command
     @Override
     public void initialize()
     {
+        timer.reset();
         Hood.getInstance().setVoltage(Volts.of(Constants.Hood.ZEROING_VOLTAGE));
     }
 
     @Override
     public boolean isFinished()
     {
-        return Hood.getInstance().isStalling();
+        return timer.hasElapsed(0.2) && Hood.getInstance().isStalling();
     }
 
     @Override
