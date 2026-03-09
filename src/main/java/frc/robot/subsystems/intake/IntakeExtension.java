@@ -7,6 +7,7 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -28,6 +29,8 @@ public class IntakeExtension extends SubsystemBase
     private ElevatorSim sim = new ElevatorSim(
         LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, Constants.IntakeExtension.GEAR_RATIO),
             DCMotor.getKrakenX60(1), Constants.IntakeExtension.MIN_HEIGHT, Constants.IntakeExtension.MAX_HEIGHT, false, Constants.IntakeExtension.MIN_HEIGHT);
+
+    private Debouncer stallingDebouncer;
     
     private IntakeExtension()
     {
@@ -39,6 +42,8 @@ public class IntakeExtension extends SubsystemBase
             motor.getSimState().Orientation = Constants.IntakeExtension.MECHANICAL_ORIENTATION;
             motor.getSimState().setMotorType(TalonFXSimState.MotorType.KrakenX60);
         }
+
+        stallingDebouncer = new Debouncer(Constants.IntakeExtension.STALLING_DEBOUNCE_TIME);
     }
 
     private void config()
@@ -89,11 +94,11 @@ public class IntakeExtension extends SubsystemBase
     {
         if (getVoltage().in(Volts) > 0)
         {
-            return motor.getStatorCurrent().getValueAsDouble() >= Constants.IntakeExtension.STALLING_CURRENT_EXTEND;
+            return stallingDebouncer.calculate(motor.getStatorCurrent().getValueAsDouble() >= Constants.IntakeExtension.STALLING_CURRENT_EXTEND);
         }
         else
         {
-            return motor.getStatorCurrent().getValueAsDouble() >= Constants.IntakeExtension.STALLING_CURRENT_RETRACT;
+            return stallingDebouncer.calculate(motor.getStatorCurrent().getValueAsDouble() >= Constants.IntakeExtension.STALLING_CURRENT_RETRACT);
         }
     }
     

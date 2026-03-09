@@ -144,6 +144,7 @@ public class Constants
         public static final double KP = 7.0;
 		public static final double KI = 0.0;
 		public static final double KD = 0.0;
+        public static final double KF = 1.0;
 		
         public static final double KS = 0.0;
         public static final double KV = 12.0/90.0; // max voltage/max speed = 12/(120/1.33)
@@ -154,6 +155,7 @@ public class Constants
         public static final double GEAR_RATIO = 16.0/12.0;
         
         public static final ChassisReference MECHANICAL_ORIENTATION = ChassisReference.CounterClockwise_Positive;
+
     }
 
     public class IntakeExtension
@@ -179,6 +181,8 @@ public class Constants
 
         public static final double MIN_HEIGHT = 0.0; // TODO
         public static final double MAX_HEIGHT = 1.0; // TODO
+        
+        public static final double STALLING_DEBOUNCE_TIME = 0.1;
     }
 
     public class Hood
