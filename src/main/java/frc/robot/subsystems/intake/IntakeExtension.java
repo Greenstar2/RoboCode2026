@@ -1,6 +1,5 @@
 package frc.robot.subsystems.intake;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -52,10 +51,6 @@ public class IntakeExtension extends SubsystemBase
         extensionConfig.MotorOutput.Inverted = Constants.IntakeExtension.INVERTED;
         extensionConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        extensionConfig.Slot0.kP = Constants.IntakeExtension.KP;
-        extensionConfig.Slot0.kI = Constants.IntakeExtension.KI;
-        extensionConfig.Slot0.kD = Constants.IntakeExtension.KD;
-
         extensionConfig.Voltage.PeakForwardVoltage = Constants.MAX_VOLTAGE;
         extensionConfig.Voltage.PeakReverseVoltage = -Constants.MAX_VOLTAGE;
 
@@ -88,17 +83,6 @@ public class IntakeExtension extends SubsystemBase
             return;
         }
         motor.setControl(new VoltageOut(voltage));
-    }
-
-    // in case we switch to using PID
-    public void setVelocity (AngularVelocity velocity)
-    {
-        if (isDisabled())
-        {
-            System.out.println("Quashing input to IntakeExtension");
-            return;
-        }
-        motor.setControl(new VelocityVoltage(velocity));
     }
 
     public boolean isStalling()
