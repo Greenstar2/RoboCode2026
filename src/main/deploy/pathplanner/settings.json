@@ -6,9 +6,10 @@
     "DepotClimbLeft",
     "LeftSingleSweepExit",
     "LeftTrenchNeutralClimbLeft",
-    "RightSingleSweepExit",
+    "LeftFirstFarDoubleSweep",
     "OutpostClimbRight",
     "RightFerry",
+    "RightSingleSweepExit",
     "RightTrenchNeutralClimbRight"
   ],
   "autoFolders": [],
