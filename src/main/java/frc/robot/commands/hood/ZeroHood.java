@@ -27,7 +27,7 @@ public class ZeroHood extends Command
     @Override
     public boolean isFinished()
     {
-        return timer.hasElapsed(0.2) && Hood.getInstance().isStalling();
+        return Hood.getInstance().isStalling();
     }
 
     @Override

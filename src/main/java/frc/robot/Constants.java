@@ -102,16 +102,16 @@ public class Constants
         
         public static final double GEAR_RATIO = 20.0/12.0; // TODO
 
-		public static final double LEFT_KP = 1.0; // TODO
-		public static final double LEFT_KI = 0.0;
-		public static final double LEFT_KD = 0.0054;
-        public static final double LEFT_KS = 0.21795;
+		public static final double LEFT_KP = 0.07; // TODO
+		public static final double LEFT_KI = 0.0; // TODO
+        public static final double LEFT_KD = 0.0; // TODO 
+        public static final double LEFT_KS = 0.13518;
         public static final double LEFT_KV = 0.11737;
         public static final double LEFT_KA = 0.0055121;
 		
-        public static final double RIGHT_KP = 1.0; // TODO
+        public static final double RIGHT_KP = 0.07; // TODO
 		public static final double RIGHT_KI = 0.0;
-		public static final double RIGHT_KD = 0.0054;
+		public static final double RIGHT_KD = 0.0;
         public static final double RIGHT_KS = 0.13518;
         public static final double RIGHT_KV = 0.1154;
         public static final double RIGHT_KA = 0.0057192;
@@ -222,6 +222,8 @@ public class Constants
         public static final double ZEROING_POSITION = 75.5; 
         // because the hood current zeroes too high up for some reason and we don't
         // want the hood to stall when it goes to 75 degrees (its max angle)
+
+        public static final double DEBOUNCE_TIME = 0.1;
     }
 
     public class Simulation
@@ -364,18 +366,18 @@ public class Constants
 
         public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         public static final double STATOR_CURRENT_LIMIT = 60.0;
-        public static final double SUPPLY_CURRENT_LIMIT = 60.0;
+        public static final double SUPPLY_CURRENT_LIMIT = 40.0;
 
         public static final double DEFAULT_VOLTAGE = 0.0;
         public static final double INTAKE_VOLTAGE = 6.0;
 
-        public static final double INTAKE_VELOCITY = 30.0; // rot/s
+        public static final double INTAKE_VELOCITY = 25.0; // rot/s
         
         public static final double KS = 0;
-        public static final double KV = 0.36;
+        public static final double KV = 0;
         public static final double KA = 0;
         
-        public static final double KP = 3.0;
+        public static final double KP = 1.0;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
 

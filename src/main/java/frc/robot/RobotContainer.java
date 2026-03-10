@@ -47,6 +47,7 @@ import frc.robot.commands.hood.HoodManualUp;
 import frc.robot.commands.hood.ZeroHood;
 import frc.robot.commands.indexer.IndexerDefaultSpeed;
 import frc.robot.commands.indexer.IndexerFullSpeed;
+import frc.robot.commands.intake.AgitateIntake;
 import frc.robot.commands.intake.DefaultIntake;
 import frc.robot.commands.intake.EjectIntake;
 import frc.robot.commands.intake.ExtendIntake;
@@ -215,7 +216,8 @@ public class RobotContainer
     public void init()
     {
         // tested in sim
-        stow = ()->Commands.runOnce(()->CommandScheduler.getInstance().cancel(commands.toArray(new Command[0]))); 
+        stow = ()->Commands.runOnce(()->CommandScheduler.getInstance().cancel(commands.toArray(new Command[0])))
+            .andThen(new AimToAngle(75.0));
         // because a command instance cannot be scheduled to independent triggers
         
 
@@ -223,7 +225,7 @@ public class RobotContainer
         shoot = new RotateToAngle(drivetrain, ()->AlignConstants.HUB)
             //Commands.none()
             .alongWith(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees)))
-            .alongWith(new IndependentCommand(track(new ShooterTargetSpeed(Util.calculateShootVelocity(drivetrain)))))
+            .alongWith(new IndependentCommand(track(new ShooterTargetSpeed(()->Util.calculateShootVelocity(drivetrain)))))
             // .alongWith(new AimToAngle(75.0))
             // .alongWith(new IndependentCommand(new ShooterTargetSpeed(()->8.0 + leftFlywheelOffset, ()->8.0 + rightFlywheelOffset)))
             .andThen(new WaitUntilCommand(
@@ -315,6 +317,7 @@ public class RobotContainer
         testCommandChooser.addOption("Intake/EjectIntake", new EjectIntake());
         testCommandChooser.addOption("Intake/ExtendIntake", new ExtendIntake());
         testCommandChooser.addOption("Intake/RetractIntake", new RetractIntake());
+        testCommandChooser.addOption("Intake/AgitateIntake", new AgitateIntake());
         testCommandChooser.addOption("Shooter/ShooterTargetSpeed[10]", new ShooterTargetSpeed(10.0));
         testCommandChooser.addOption("Shooter/ShooterTargetSpeed[" + Constants.HARDCODE_VELOCITY + "]", new ShooterTargetSpeed(Constants.HARDCODE_VELOCITY));
         testCommandChooser.addOption("Shooter/ShooterDefaultSpeed", new ShooterDefaultSpeed());
@@ -364,10 +367,10 @@ public class RobotContainer
         Indexer.getInstance().setDefaultCommand(new IndexerDefaultSpeed());
         ShooterIndexer.getInstance().setDefaultCommand(new ShooterIndexerDefaultSpeed());
         Shooter.getInstance().setDefaultCommand(new ShooterDefaultSpeed());
-        Hood.getInstance().setDefaultCommand(new AimToAngle(75.0));
+        // Hood.getInstance().setDefaultCommand(new AimToAngle(75.0));
 
         // -------------------- CHANGE BINDING SETTINGS HERE ---------------------
-
+        
         boolean useDebuggingBindings = false; // mainly for sysid or debugging
         boolean useDefaultBindings = false; // in case ever the official controls don't work, use these as a backup to be able to drive around
         
@@ -633,7 +636,7 @@ public class RobotContainer
         }));
 
         operator.y().whileTrue(track(new HoodManualUp()));
-        operator.x().onTrue(track(new IndependentCommand(new RunIntake())
+        operator.x().onTrue(track(new IndependentCommand(track(new RunIntake()))
             .andThen(Commands.runOnce(()->intakeTriggered = true))
             .andThen(new RetractIntake())
             .andThen(Commands.runOnce(()->

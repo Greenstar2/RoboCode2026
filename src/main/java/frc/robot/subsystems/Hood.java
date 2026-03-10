@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
@@ -37,6 +38,8 @@ public class Hood extends SubsystemBase
     private final DCMotorSim sim = new DCMotorSim(
         LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.001, Constants.Hood.GEAR_RATIO),
         DCMotor.getKrakenX44(1));
+
+    private Debouncer debouncer = new Debouncer(Constants.Hood.DEBOUNCE_TIME);
 
     private Hood()
     {
@@ -135,7 +138,8 @@ public class Hood extends SubsystemBase
     
     public boolean isStalling()
     {
-        return Math.abs(motor.getStatorCurrent().getValueAsDouble()) >= Constants.Hood.STALLING_CURRENT;
+
+        return debouncer.calculate(Math.abs(motor.getStatorCurrent().getValueAsDouble()) >= Constants.Hood.STALLING_CURRENT);
     }
 
     public double getStatorCurrent()
