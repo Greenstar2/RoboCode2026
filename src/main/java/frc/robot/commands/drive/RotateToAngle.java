@@ -61,7 +61,7 @@ public class RotateToAngle extends Command{
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
         dt.setControl(drive
-            .withHeadingPID(Constants.TunerConstants.steerGains.kP, Constants.TunerConstants.steerGains.kI, Constants.TunerConstants.steerGains.kD)
+            .withHeadingPID(Constants.Drive.autoalignSteerKP, Constants.Drive.autoalignSteerKI, Constants.Drive.autoalignSteerKD)
             .withTargetDirection(calcAngle())
             .withMaxAbsRotationalRate(MaxAngularRate)
             .withVelocityX(0.0)
@@ -72,7 +72,7 @@ public class RotateToAngle extends Command{
         System.out.println("Rotating to target...");
         System.out.println("Current angle: " + dt.getState().Pose.getRotation());
         Telemetry.getInstance().test1.accept(dt.getState().Pose.getRotation().getDegrees());
-        System.out.println("Target rotation: " + calcAngle());
+        System.out.println("Target rotation: " + (calcAngle().getDegrees()));
         Telemetry.getInstance().test2.accept(calcAngle().getDegrees());
         System.out.println("ERROR: " + (calcAngle().getDegrees() - dt.getState().Pose.getRotation().getDegrees()));
         System.out.println("X- and Y- Speeds: " + (xSpeed * MaxSpeed) + ", " + (ySpeed * MaxSpeed));
@@ -80,7 +80,7 @@ public class RotateToAngle extends Command{
 
     @Override
     public boolean isFinished() {
-        return (dt.getState().Pose.getRotation().getRotations() + 0.5 - calcAngle().getRotations()) % 1 <= 0.01;
+        return (dt.getState().Pose.getRotation().getDegrees() + 180 - calcAngle().getDegrees()) % 360 <= 0.2;
     }
 
     @Override

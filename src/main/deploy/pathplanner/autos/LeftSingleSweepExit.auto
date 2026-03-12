@@ -13,11 +13,24 @@
                 "data": {
                   "pathName": "LSSETrenchToCenter"
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
               {
                 "type": "named",
                 "data": {
                   "name": "ExtendIntake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
                 }
               }
             ]

@@ -410,12 +410,12 @@ public class RobotContainer
         // driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
         // driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
         // driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
-        /*
-        driver.a().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
-        driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
-        driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
-        driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
+        driver.a().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kForward));
+        driver.b().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kReverse));
+        driver.x().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kForward));
+        driver.y().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kReverse));
 
+        /*
         driver.button(1).onTrue(new DriveToPose(drivetrain));
         driver.button(2).onTrue(alignLeft);
         driver.button(3).onTrue(alignRight);

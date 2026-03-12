@@ -139,6 +139,7 @@ public class Telemetry
     private final DoublePublisher driveTimestamp = driveStateTable.getDoubleTopic("Timestamp").publish();
     private final DoublePublisher driveOdometryFrequency = driveStateTable.getDoubleTopic("OdometryFrequency").publish();
     private final DoublePublisher distanceToShoot = driveStateTable.getDoubleTopic("DistanceToShoot").publish();
+    private final DoublePublisher driveHeading = driveStateTable.getDoubleTopic("Drivetrain Heading (Degrees)").publish();
 
     /* Robot pose for field positioning */
     private final NetworkTable poses = tableInstance.getTable("Pose");
@@ -317,6 +318,7 @@ public class Telemetry
         driveModulePositions.set(state.ModulePositions);
         driveTimestamp.set(state.Timestamp);
         driveOdometryFrequency.set(1.0 / state.OdometryPeriod);
+        driveHeading.set(state.Pose.getRotation().getDegrees());
         Translation2d targetPose = (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) ? 
                     Constants.HUB_TARGET_POSITION.toTranslation2d() : 
                     FlippingUtil.flipFieldPosition(Constants.HUB_TARGET_POSITION.toTranslation2d());
