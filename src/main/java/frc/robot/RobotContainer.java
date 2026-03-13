@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.FlippingUtil;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -331,20 +332,20 @@ public class RobotContainer
         NamedCommands.registerCommand("RetractIntake", new RetractIntake());
         NamedCommands.registerCommand("StartRunIntake", new IndependentCommand(new RunIntake()));
         NamedCommands.registerCommand("StartDefaultIntake", new IndependentCommand(new DefaultIntake()));
-        NamedCommands.registerCommand("StartDefaultIntake", new IndependentCommand(new DefaultIntake()));
         NamedCommands.registerCommand("EjectIntake (with timeout)", new EjectIntake().withTimeout(1.0));
         NamedCommands.registerCommand("HardShoot", hardShoot);
         NamedCommands.registerCommand("RevShoot", Commands.runOnce(()->{System.out.println(Util.calculateShootVelocity(drivetrain));})
             .andThen(Commands.runOnce(()->CommandScheduler.getInstance().schedule(new ShooterTargetSpeed(
                 ()->Util.calculateShootVelocity(drivetrain) + leftFlywheelOffset,
                 ()->Util.calculateShootVelocity(drivetrain) + rightFlywheelOffset)))));
-        NamedCommands.registerCommand("Shoot", new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees))
-        .alongWith(new ShooterTargetSpeed(()->Util.calculateShootVelocity(drivetrain)))
-        .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot() && Hood.getInstance().readyToShoot()))
-        .andThen(new ShooterIndexerFullSpeed().withTimeout(5.0)) // load to shoot
-        .finallyDo(()->{
-            CommandScheduler.getInstance().schedule(stow.get());
-        })
+        NamedCommands.registerCommand("Shoot", 
+            new IndependentCommand(new AimToAngle(()->Util.calculateShootPitch(drivetrain).in(Degrees)))
+            .alongWith(new IndependentCommand(new ShooterTargetSpeed(()->Util.calculateShootVelocity(drivetrain))))
+            .andThen(new WaitUntilCommand(()->Shooter.getInstance().readyToShoot() && Hood.getInstance().readyToShoot()))
+            .andThen(new ShooterIndexerFullSpeed().alongWith(new IndexerFullSpeed()).withTimeout(5.0)) // load to shoot
+            .finallyDo(()->{
+                CommandScheduler.getInstance().schedule(stow.get());
+            })
         .withName("Shoot"));
         
         autonChooser = AutoBuilder.buildAutoChooser();
@@ -390,9 +391,11 @@ public class RobotContainer
 
     private void configureDebugBindings()
     {
+
+        driver.x().whileTrue(Commands.runOnce(()->drivetrain.setControl(drive
+            .withRotationalRate(0.5))));
         driver.y().whileTrue(new ClimbUp());
         driver.a().whileTrue(new ClimbDown());
-        driver.x().whileTrue(new SpoolUntilStall());
         driver.b().whileTrue(new Unspool());
 
         // driver.button(1).onTrue(Hood.getInstance().sysIdQuasistatic(Direction.kForward));
@@ -410,10 +413,10 @@ public class RobotContainer
         // driver.b().whileTrue(Hood.getInstance().sysIdQuasistatic(Direction.kReverse));
         // driver.x().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kForward));
         // driver.y().whileTrue(Hood.getInstance().sysIdDynamic(Direction.kReverse));
-        driver.a().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kForward));
+        /*driver.a().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kForward));
         driver.b().whileTrue(Shooter.getInstance().rightSysIdQuasistatic(Direction.kReverse));
         driver.x().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kForward));
-        driver.y().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kReverse));
+        driver.y().whileTrue(Shooter.getInstance().rightSysIdDynamic(Direction.kReverse));*/
 
         /*
         driver.button(1).onTrue(new DriveToPose(drivetrain));

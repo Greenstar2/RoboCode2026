@@ -132,15 +132,15 @@ public class Constants
 
     public class Intake
     {
-        public static int LEFT_ID = 33;
-        public static int RIGHT_ID = 23;
+        public static int LEFT_ID = 23;
+        public static int RIGHT_ID = 33;
 
         public static final double STATOR_CURRENT_LIMIT = 60.0;
         public static final double SUPPLY_CURRENT_LIMIT = 40.0;
 
-        public static final double INTAKE_VELOCITY = 30.0; // rot/s
+        public static final double INTAKE_VELOCITY = -30.0; // rot/s // not a bug
         public static final double DEFAULT_INTAKE_VELOCITY = 0.0;
-        public static final double EJECT_VELOCITY = -25.0; // rot/s
+        public static final double EJECT_VELOCITY = 25.0; // rot/s
 
         public static final double KP = 5.0;
 		public static final double KI = 0.0;
@@ -149,7 +149,7 @@ public class Constants
         public static final double KS = 0.0;
         public static final double KV = 12.0/90.0; // max voltage/max speed = 12/(120/1.33)
         public static final double KA = 0.0;
-        public static final InvertedValue LEFT_INVERTED = InvertedValue.Clockwise_Positive;
+        public static final InvertedValue LEFT_INVERTED = InvertedValue.CounterClockwise_Positive;
         public static final InvertedValue RIGHT_INVERTED = InvertedValue.CounterClockwise_Positive;
 
         
@@ -524,7 +524,7 @@ public class Constants
         public static final int kFrontRightDriveMotorId = 10;
         public static final int kFrontRightSteerMotorId = 9;
         public static final int kFrontRightEncoderId = 18;
-        public static final Angle kFrontRightEncoderOffset = Rotations.of(0.25927734375);
+        public static final Angle kFrontRightEncoderOffset = Rotations.of(0.260010);
         public static final boolean kFrontRightSteerMotorInverted = false;
         public static final boolean kFrontRightEncoderInverted = false;
 

@@ -22,15 +22,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "ExtendIntake"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ExtendIntake"
                 }
               }
             ]
@@ -73,7 +73,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "RetractIntake"
+                  "name": "RevShoot"
                 }
               }
             ]
@@ -93,6 +93,12 @@
                 "type": "named",
                 "data": {
                   "name": "Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractIntake"
                 }
               }
             ]

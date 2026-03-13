@@ -57,15 +57,19 @@ public class Telemetry
 
     private NetworkTable intake = table.getSubTable("Intake");
     private StringPublisher intakeCommand = intake.getStringTopic("main command").publish();
-    private DoublePublisher intakeMainVelocity = intake.getDoubleTopic("main velocity (rot per s)").publish();
-    private DoublePublisher intakeMainTargetVelocity = intake.getDoubleTopic("main target velocity (rot per s)").publish();
-    private DoublePublisher intakeMainVoltage = intake.getDoubleTopic("main voltage (V)").publish();
-    private DoublePublisher intakeMainCurrent = intake.getDoubleTopic("main current (A) ").publish();
+    private DoublePublisher intakeTargetVelocity = intake.getDoubleTopic("target velocity (rot per s)").publish();
+    private DoublePublisher intakeLeftVelocity = intake.getDoubleTopic("left velocity (rot per s)").publish();
+    private DoublePublisher intakeLeftVoltage = intake.getDoubleTopic("left voltage (V)").publish();
+    private DoublePublisher intakeLeftCurrent = intake.getDoubleTopic("left current (A) ").publish();
+    private DoublePublisher intakeRightVelocity = intake.getDoubleTopic("right velocity (rot per s)").publish();
+    private DoublePublisher intakeRightVoltage = intake.getDoubleTopic("right voltage (V)").publish();
+    private DoublePublisher intakeRightCurrent = intake.getDoubleTopic("right current (A) ").publish();
 
-    private StringPublisher intakeExtensionCommand = intake.getStringTopic("extension command").publish();
-    private DoublePublisher intakeExtensionVelocity = intake.getDoubleTopic("extension velocity (rot per s)").publish();
-    private DoublePublisher intakeExtensionVoltage = intake.getDoubleTopic("extension voltage (V)").publish();
-    private DoublePublisher intakeExtensionCurrent = intake.getDoubleTopic("current (A)").publish();
+    private NetworkTable intakeExtension = table.getSubTable("Intake Extension");
+    private StringPublisher intakeExtensionCommand = intakeExtension.getStringTopic("command").publish();
+    private DoublePublisher intakeExtensionVelocity = intakeExtension.getDoubleTopic("velocity (rot per s)").publish();
+    private DoublePublisher intakeExtensionVoltage = intakeExtension.getDoubleTopic("voltage (V)").publish();
+    private DoublePublisher intakeExtensionCurrent = intakeExtension.getDoubleTopic("current (A)").publish();
 
     private NetworkTable hood = table.getSubTable("Hood");
     private StringPublisher hoodCommand = hood.getStringTopic("command").publish();
@@ -200,10 +204,13 @@ public class Telemetry
 
         Command intakeCommand = Intake.getInstance().getCurrentCommand();
         this.intakeCommand.set(intakeCommand == null ? "" : intakeCommand.getName());
-        intakeMainVelocity.set(Intake.getInstance().getVelocity().in(RotationsPerSecond));
-        intakeMainTargetVelocity.set(Intake.getInstance().getTargetVelocity().in(RotationsPerSecond));
-        intakeMainVoltage.set(Intake.getInstance().getVoltage().in(Volts));
-        intakeMainCurrent.set(Intake.getInstance().getStatorCurrent().in(Amps));
+        intakeTargetVelocity.set(Intake.getInstance().getTargetVelocity().in(RotationsPerSecond));
+        intakeLeftVelocity.set(Intake.getInstance().getLeftVelocity().in(RotationsPerSecond));
+        intakeLeftVoltage.set(Intake.getInstance().getLeftVoltage().in(Volts));
+        intakeLeftCurrent.set(Intake.getInstance().getLeftStatorCurrent().in(Amps));
+        intakeRightVelocity.set(Intake.getInstance().getRightVelocity().in(RotationsPerSecond));
+        intakeRightVoltage.set(Intake.getInstance().getRightVoltage().in(Volts));
+        intakeRightCurrent.set(Intake.getInstance().getRightStatorCurrent().in(Amps));
         
         Command intakeExtensionCommand = IntakeExtension.getInstance().getCurrentCommand();
         this.intakeExtensionCommand.set(intakeExtensionCommand == null ? "" : intakeExtensionCommand.getName());

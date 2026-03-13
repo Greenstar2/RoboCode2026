@@ -37,8 +37,8 @@ public class Intake extends SubsystemBase
    
     private Intake()
     {
-        left = new TalonFX(Constants.Intake.LEFT_ID, Constants.CAN_CHAIN);
-        right = new TalonFX(Constants.Intake.RIGHT_ID, Constants.CAN_CHAIN);
+        left = new TalonFX(Constants.Intake.LEFT_ID, Constants.CAN_SUPERSTRUCTURE);
+        right = new TalonFX(Constants.Intake.RIGHT_ID, Constants.CAN_SUPERSTRUCTURE);
         config();
         
         if (isSimulated())
@@ -51,9 +51,11 @@ public class Intake extends SubsystemBase
     private void config()
     {
         left.clearStickyFaults();
+        right.clearStickyFaults();
         TalonFXConfiguration leftConfig = new TalonFXConfiguration();
         leftConfig.Feedback.SensorToMechanismRatio = Constants.Intake.LEFT_GEAR_RATIO;
         leftConfig.MotorOutput.Inverted = Constants.Intake.LEFT_INVERTED;
+        leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         left.getConfigurator().apply(leftConfig);
         TalonFXConfiguration rightConfig = new TalonFXConfiguration();
         rightConfig.Feedback.SensorToMechanismRatio = Constants.Intake.RIGHT_GEAR_RATIO;
@@ -77,29 +79,45 @@ public class Intake extends SubsystemBase
         motorConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.SUPPLY_CURRENT_LIMIT;
         motorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        left.getConfigurator().apply(motorConfig);
+        //left.getConfigurator().apply(motorConfig);
         right.getConfigurator().apply(motorConfig);
-        left.setControl(new Follower(Constants.Intake.RIGHT_ID, MotorAlignmentValue.Aligned));
-    }
-   
-    public Voltage getVoltage()
-    {
-        return right.getMotorVoltage().getValue();
+
+        left.setControl(new Follower(Constants.Intake.RIGHT_ID, MotorAlignmentValue.Opposed));
     }
     
-    public AngularVelocity getVelocity()
-    {
-        return right.getVelocity().getValue();
-    }
-
     public AngularVelocity getTargetVelocity()
     {
         return RotationsPerSecond.of(targetVelocity);
     }
+   
+    public Voltage getRightVoltage()
+    {
+        return right.getMotorVoltage().getValue();
+    }
+    
+    public AngularVelocity getRightVelocity()
+    {
+        return right.getVelocity().getValue();
+    }
 
-    public Current getStatorCurrent()
+    public Current getRightStatorCurrent()
     {
         return right.getStatorCurrent().getValue();
+    }
+    
+    public Voltage getLeftVoltage()
+    {
+        return left.getMotorVoltage().getValue();
+    }
+    
+    public AngularVelocity getLeftVelocity()
+    {
+        return left.getVelocity().getValue();
+    }
+
+    public Current getLeftStatorCurrent()
+    {
+        return left.getStatorCurrent().getValue();
     }
    
     public void setVoltage (Voltage voltage)
